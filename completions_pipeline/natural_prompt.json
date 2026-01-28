@@ -1,0 +1,30 @@
+[
+    {
+        "transcript": [
+            "Thanks for joining quickly. I'm Jasmine from NBC News, covering the economy and labor. I'm looking into whether tariffs can bring jobs back. This is my editor Joe,  he's here to make sure that I cover all my bases. Is it okay if we record? And could you introduce yourself?",
+            "I'm Richard Mansfield, an economics professor at the University of Colorado Boulder.",
+            "Great, thanks. So big picture — what do tariffs mean for jobs and the labor force, especially compared to the China shock?",
+            "It's not clear tariffs will increase jobs. Some production might return, but many big firms rely on exports and foreign inputs. Retaliation and higher costs can reduce competitiveness and lower production, which can actually reduce hiring.",
+            "I think the other part to mention, to all of Richard is saying, is that the fact that it's a lot of uncertainty about the tariff, and the fact that you don't know the tariff going to be here for the next six months or not means that when you are making all these decisions you want to make the decision they are more easily to reverse. Right?",
+            "Yeah, no, the policy landscape piece is interesting. Thank you for that, I guess, like pie in the sky, like, what could make restoring happen. It seems like sometimes tariffs have some kind of, maybe like positive effects, like with solar panels, perhaps with semiconductors, like some people have suggested, Why does it seem like some of these maybe work and then others not as much, like with the kind of, like steel tariffs in 2018 and a lot of what happened with China, I guess I think if you had some insights?",
+            "I mean, I think our research speaks less strongly to this. Tariffs work better where the US already produces goods and can expand. They're harder where the US has little production capacity or depends heavily on foreign inputs."
+        ],
+        "qa_pairs": [
+            {
+                "prompt": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
+                "prompt_instruct": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs?",
+                "groundtruth": "Yes"
+            },
+            {
+                "prompt": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
+                "prompt_instruct": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs?",
+                "groundtruth": "No"
+            },
+            {
+                "prompt": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
+                "prompt_instruct": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs?",
+                "groundtruth": "Not Sure"
+            }
+        ]
+    }
+]

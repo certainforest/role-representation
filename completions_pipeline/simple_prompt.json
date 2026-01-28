@@ -1,0 +1,42 @@
+[
+    {
+        "transcript": [
+            "I am Alice.",
+            "I am Bob.",
+            "I like basketball.",
+            "I like soccer."
+        ],
+        "qa_pairs": [
+            {
+                "prompt": "What sport does Alice like? Answer: Alice likes",
+                "prompt_instruct": "What sport does Alice like?",
+                "groundtruth": "basketball"
+            },
+            {
+                "prompt": "What sport does Bob like? Answer: Bob likes",
+                "prompt_instruct": "What sport does Bob like?",
+                "groundtruth": "soccer"
+            }
+        ]
+    },
+    {
+        "transcript": [
+            "I am Daniel.",
+            "I am Emma.",
+            "I love pizza.",
+            "I love burgers."
+        ],
+        "qa_pairs": [
+            {
+                "prompt": "What food does Daniel like? Answer: Daniel likes",
+                "prompt_instruct": "What food does Daniel like?",
+                "groundtruth": "pizza"
+            },
+            {
+                "prompt": "What food does Emma like? Answer: Emma likes",
+                "prompt_instruct": "What food does Emma like?",
+                "groundtruth": "burgers"
+            }
+        ]
+    }
+]

@@ -1,0 +1,58 @@
+[
+    {
+        "transcript": [
+            "I am Alice.",
+            "I am Bob.",
+            "I like basketball.",
+            "I heard that Claire likes basketball too!",
+            "Hi Alice! Yes, I like basketball. But I like tennis more!",
+            "Fun! What do you like?",
+            "I like soccer."
+        ],
+        "qa_pairs": [
+            {
+                "prompt": "What sport does Alice like the most? Answer: Alice likes",
+                "prompt_instruct": "What sport does Alice like the most?",
+                "groundtruth": "basketball"
+            },
+            {
+                "prompt": "What sport does Bob like the most? Answer: Bob likes",
+                "prompt_instruct": "What sport does Bob like the most?",
+                "groundtruth": "soccer"
+            },
+            {
+                "prompt": "What sport does Claire like the most? Answer: Claire likes",
+                "prompt_instruct": "What sport does Claire like the most?",
+                "groundtruth": "tennis"
+            }
+        ]
+    },
+    {
+        "transcript": [
+            "I am Daniel.",
+            "I am Emma.",
+            "I love pizza.",
+            "I heard that Frank loves pizza too!",
+            "Hi Daniel! Yes, I love pizza. But I love sushi more!",
+            "Nice! What about you?",
+            "I love burgers."
+        ],
+        "qa_pairs": [
+            {
+                "prompt": "What food does Daniel like the most? Answer: Daniel likes",
+                "prompt_instruct": "What food does Daniel like the most?",
+                "groundtruth": "pizza"
+            },
+            {
+                "prompt": "What food does Emma like the most? Answer: Emma likes",
+                "prompt_instruct": "What food does Emma like the most?",
+                "groundtruth": "burgers"
+            },
+            {
+                "prompt": "What food does Frank like the most? Answer: Frank likes",
+                "prompt_instruct": "What food does Frank like the most?",
+                "groundtruth": "sushi"
+            }
+        ]
+    }
+]
