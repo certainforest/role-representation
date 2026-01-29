@@ -1,0 +1,22 @@
+[
+  {
+    "prompt": "What sport does Alice like? Answer: Alice likes",
+    "groundtruth": "basketball",
+    "model_answer": "basketball"
+  },
+  {
+    "prompt": "What sport does Bob like? Answer: Bob likes",
+    "groundtruth": "soccer",
+    "model_answer": "soccer"
+  },
+  {
+    "prompt": "What food does Daniel like? Answer: Daniel likes",
+    "groundtruth": "pizza",
+    "model_answer": "pizza"
+  },
+  {
+    "prompt": "What food does Emma like? Answer: Emma likes",
+    "groundtruth": "burgers",
+    "model_answer": "pizza"
+  }
+]

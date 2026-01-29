@@ -1,0 +1,17 @@
+[
+  {
+    "prompt": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
+    "groundtruth": "Yes",
+    "model_answer": "Joe"
+  },
+  {
+    "prompt": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
+    "groundtruth": "No",
+    "model_answer": "No"
+  },
+  {
+    "prompt": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
+    "groundtruth": "Not Sure",
+    "model_answer": "No"
+  }
+]

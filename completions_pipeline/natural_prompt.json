@@ -12,17 +12,17 @@
         "qa_pairs": [
             {
                 "prompt": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
-                "prompt_instruct": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs?",
+                "prompt_instruct": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript",
                 "groundtruth": "Yes"
             },
             {
                 "prompt": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
-                "prompt_instruct": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs?",
+                "prompt_instruct": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript.",
                 "groundtruth": "No"
             },
             {
                 "prompt": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No only.",
-                "prompt_instruct": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs?",
+                "prompt_instruct": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript.",
                 "groundtruth": "Not Sure"
             }
         ]
