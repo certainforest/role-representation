@@ -1,0 +1,19 @@
+# environment
+*.venv/
+*.env
+
+# jupyter/py
+.ipynb_checkpoints
+**/__pycache__/
+
+# data 
+# data/
+*.csv
+# *.json
+*.txt
+
+# model checkpts 
+checkpoints/
+*.pt
+*.pth
+*.ckpt 
