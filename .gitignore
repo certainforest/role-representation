@@ -1,3 +1,5 @@
+.DS_Store
+
 # environment
 *.venv/
 *.env
@@ -5,6 +7,10 @@
 # jupyter/py
 .ipynb_checkpoints
 **/__pycache__/
+*.pyc
+
+*.egg-info/
+.eggs/
 
 # data 
 # data/

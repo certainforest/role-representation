@@ -6,6 +6,8 @@ pip install tqdm
 pip install scikit-learn
 pip install huggingface
 pip install openrouter
+pip install openai
+pip install python-dotenv
 # pip install transformers==4.48.3
 # pip install torch
 # pip install plotly.express

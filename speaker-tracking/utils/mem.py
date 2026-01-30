@@ -22,9 +22,9 @@ def check_memory():
 
     for i in range(device_count):
         print(f"Device {i}: {torch.cuda.get_device_name(i)}")
-        print(f"  Allocated: {torch.cuda.memory_allocated(i)/1024/1024/1024:.2f} GB")
-        print(f"  Reserved: {torch.cuda.memory_reserved(i)/1024/1024/1024:.2f} GB")
-        print(f"  Total: {torch.cuda.get_device_properties(i).total_memory/1024/1024/1024:.2f} GB")
+        print(f"Allocated: {torch.cuda.memory_allocated(i)/1024/1024/1024:.2f} GB")
+        print(f"Reserved: {torch.cuda.memory_reserved(i)/1024/1024/1024:.2f} GB")
+        print(f"Total: {torch.cuda.get_device_properties(i).total_memory/1024/1024/1024:.2f} GB")
         print()
 
 # ack mem management 
