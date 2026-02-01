@@ -1,0 +1,32 @@
+[
+  {
+    "prompt": "What sport does Alice like the most?",
+    "groundtruth": "basketball",
+    "model_answer": "Based on the conversation transcript provided, there is no explicit statement from Alice about her favorite sport. The information given only indicates that Alice likes basketball and that she was introduced to Claire as someone who also likes basketball. However, since Alice did not express a preference for any sport over another, it cannot be determined which sport she likes the most."
+  },
+  {
+    "prompt": "What sport does Bob like the most?",
+    "groundtruth": "soccer",
+    "model_answer": "Bob likes tennis the most."
+  },
+  {
+    "prompt": "What sport does Claire like the most?",
+    "groundtruth": "tennis",
+    "model_answer": "Based on the conversation transcript provided, Claire likes tennis more than basketball. Therefore, the sport Claire likes the most is tennis."
+  },
+  {
+    "prompt": "What food does Daniel like the most?",
+    "groundtruth": "pizza",
+    "model_answer": "Based on the conversation transcript provided, Daniel likes pizza the most. He explicitly states, \"I love pizza.\""
+  },
+  {
+    "prompt": "What food does Emma like the most?",
+    "groundtruth": "burgers",
+    "model_answer": "Based on the conversation transcript, Emma likes sushi the most. When she was asked what she loves, she replied, \"But I love sushi more!\" indicating that among the options mentioned (pizza, sushi, and burgers), sushi is her favorite."
+  },
+  {
+    "prompt": "What food does Frank like the most?",
+    "groundtruth": "sushi",
+    "model_answer": "Based on the conversation transcript provided, Frank likes pizza the most. The statement \"I heard that Frank loves pizza too!\" indicates that among the options given (pizza, sushi, and burgers), pizza is Frank's favorite."
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "prompt": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript",
+    "groundtruth": "Yes",
+    "model_answer": "Yes\nJoe thinks that policy uncertainty is the main reason tariffs may fail to create jobs. He says that the fact that there is a lot of uncertainty about the tariff and the lack of knowledge about its future makes it difficult to make decisions that can be easily reversed."
+  },
+  {
+    "prompt": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript.",
+    "groundtruth": "No",
+    "model_answer": "Yes\nRichard thinks that policy uncertainty is the main reason tariffs may fail to create jobs because it makes it difficult to predict how tariffs will affect businesses and workers in the long term. He also mentions that retaliation and higher costs can reduce competitiveness and lower production, which can lead to reduced hiring."
+  },
+  {
+    "prompt": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript.",
+    "groundtruth": "Not Sure",
+    "model_answer": "Yes\nAlice thinks that policy uncertainty is the main reason tariffs may fail to create jobs because she mentions that \"the fact that it's a lot of uncertainty about the tariff\" and \"you don't know the tariff going to be here for the next six months or not\" makes it difficult to make decisions and potentially leads to a situation where decisions made are more easily reversed."
+  }
+]

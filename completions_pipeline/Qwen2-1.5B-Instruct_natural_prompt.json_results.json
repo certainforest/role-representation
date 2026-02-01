@@ -1,0 +1,17 @@
+[
+  {
+    "prompt": "Does Joe think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript",
+    "groundtruth": "Yes",
+    "model_answer": "Yes.\nJoe thinks that policy uncertainty is the main reason tariffs may fail to create jobs because it makes it difficult to predict how tariffs will affect businesses and workers over time. The statement \"The fact that it's a lot of uncertainty about the tariff, and the fact that you don't know the tariff going to be here for the next six months or not means that when you are making all these decisions you want to make the decision they are more easily to reverse.\" suggests that uncertainty about future policies can lead to hesitation in making decisions that could potentially be reversed later."
+  },
+  {
+    "prompt": "Does Richard think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript.",
+    "groundtruth": "No",
+    "model_answer": "Yes.\nRichard believes that the fact that there is a lot of uncertainty about the tariff and the lack of clarity makes it difficult to make decisions and reverse them easily. He also mentions that the policy landscape is important, suggesting that the uncertainty surrounding tariffs may prevent them from being effective in creating jobs."
+  },
+  {
+    "prompt": "Does Alice think that policy uncertainty is the main reason tariffs may fail to create jobs? Answer with Yes or No first, then provide a brief explanation citing their statements from the transcript.",
+    "groundtruth": "Not Sure",
+    "model_answer": "Yes.\nExplanation: The transcript states that \"the fact that it's a lot of uncertainty about the tariff, and the fact that you don't know the tariff going to be here for the next six months or not means that when you are making all these decisions you want to make the decision they are more easily to reverse.\" This suggests that uncertainty about the future of tariffs is one factor that could contribute to their failure to create jobs."
+  }
+]

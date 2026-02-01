@@ -1,0 +1,22 @@
+[
+  {
+    "prompt": "What sport does Alice like?",
+    "groundtruth": "basketball",
+    "model_answer": "Alice likes basketball."
+  },
+  {
+    "prompt": "What sport does Bob like?",
+    "groundtruth": "soccer",
+    "model_answer": "Based on the provided conversation transcript, Bob likes an unspecified sport since he did not explicitly state his preference. However, given the context where Alice mentioned she likes basketball and then Bob said \"I like soccer,\" it can be inferred that Bob likes soccer."
+  },
+  {
+    "prompt": "What food does Daniel like?",
+    "groundtruth": "pizza",
+    "model_answer": "Based on the conversation transcript provided, Daniel likes pizza."
+  },
+  {
+    "prompt": "What food does Emma like?",
+    "groundtruth": "burgers",
+    "model_answer": "Based on the provided conversation transcript, there is no explicit statement indicating what food Emma likes. The only information given about Emma's preferences is that she says \"I am Emma.\" To determine what food Emma likes, we would need additional context or statements from her expressing a preference for a particular type of food."
+  }
+]

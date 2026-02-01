@@ -1,0 +1,32 @@
+[
+  {
+    "prompt": "What sport does Alice like the most?",
+    "groundtruth": "basketball",
+    "model_answer": "Based on the conversation, it seems that Alice likes basketball the most."
+  },
+  {
+    "prompt": "What sport does Bob like the most?",
+    "groundtruth": "soccer",
+    "model_answer": "Based on the conversation, Bob likes soccer the most."
+  },
+  {
+    "prompt": "What sport does Claire like the most?",
+    "groundtruth": "tennis",
+    "model_answer": "Tennis"
+  },
+  {
+    "prompt": "What food does Daniel like the most?",
+    "groundtruth": "pizza",
+    "model_answer": "Pizza"
+  },
+  {
+    "prompt": "What food does Emma like the most?",
+    "groundtruth": "burgers",
+    "model_answer": "Based on the conversation, Emma likes burgers the most."
+  },
+  {
+    "prompt": "What food does Frank like the most?",
+    "groundtruth": "sushi",
+    "model_answer": "Sushi"
+  }
+]
