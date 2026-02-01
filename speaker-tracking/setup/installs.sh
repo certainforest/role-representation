@@ -8,8 +8,9 @@ pip install huggingface
 pip install openrouter
 pip install openai
 pip install python-dotenv
+pip install nnsight
 # pip install transformers==4.48.3
-# pip install torch
+pip install torch
 # pip install plotly.express
 # pip install pyyaml
 # pip install pyarrow
