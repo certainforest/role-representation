@@ -9,10 +9,13 @@ import time
 models = {
     # 'qwen3-1.7b': 'Qwen/Qwen3-1.7B', - not on openrouter
     # 'qwen3-4b': 'qwen/qwen3-4b:free', - openrouter limits free models
-    'qwen3-8b': 'qwen/qwen3-8B',
-    'qwen3-14b': 'qwen/qwen3-14B',
-    'qwen3-32b': 'qwen/qwen3-32B',
-    'gemma2b-it': 'google/gemma-2-9b-it'
+    # 'qwen3-8b': 'qwen/qwen3-8B',
+    # 'qwen3-14b': 'qwen/qwen3-14B',
+    # 'qwen3-32b': 'qwen/qwen3-32B',
+    # 'gemma2b-it': 'google/gemma-2-9b-it'
+    'olmo3-7b-instruct': 'allenai/olmo-3.1-7b-instruct',
+    'olmo3.1-32b-instruct': 'allenai/olmo-3.1-32b-instruct'
+
 }
 
 def send_slack(text): 
