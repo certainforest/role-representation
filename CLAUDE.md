@@ -100,6 +100,26 @@ The `labs/transcripts/` directory contains interview transcripts (likely for NLP
 **Started**: 2026-02-02
 **Research Goal**: Understand how language models build and update internal representations that bind speakers to their attributes, beliefs, and statements across conversational context.
 
+### Collaboration Setup
+
+**Repository**: https://github.com/certainforest/role-representation.git
+**Branch**: `yuchen` (ALWAYS work on this branch)
+**Remote**: `collaborate` (tracking collaborate/yuchen)
+
+**Git Commands**:
+```bash
+# Check current branch (should always be yuchen)
+git branch
+
+# Pull latest changes from collaborate
+git pull collaborate yuchen
+
+# Push changes to yuchen branch
+git push collaborate yuchen
+```
+
+**IMPORTANT**: Never commit to main or other branches. All work stays on `yuchen` branch.
+
 ### Implementation Progress
 
 #### Phase 1: Data Infrastructure ✓ IN PROGRESS
