@@ -1,0 +1,1030 @@
+{
+  "metadata": {
+    "description": "Speaker attribution dataset for pragmatic inference evaluation",
+    "levels": {
+      "1_and_2": "2 speakers, minimal structure, labeled vs unlabeled comparison",
+      "2.5": "3 speakers, non-round-robin, requires discourse cue tracking"
+    },
+    "total_examples": 20
+  },
+  "examples": [
+    {
+      "level": "1_and_2",
+      "topic": "pets",
+      "names": [
+        "Aisha",
+        "Tomas"
+      ],
+      "transcript_labeled": [
+        "Aisha: I am Aisha.",
+        "Tomas: I am Tomas.",
+        "Aisha: I like cats.",
+        "Tomas: I like dogs."
+      ],
+      "transcript_unlabeled": [
+        "I am Aisha.",
+        "I am Tomas.",
+        "I like cats.",
+        "I like dogs."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What pets does Aisha prefer? Answer: Aisha prefers",
+          "prompt_instruct": "What pets does Aisha prefer?",
+          "groundtruth": "cats"
+        },
+        {
+          "prompt": "What pets does Tomas prefer? Answer: Tomas prefers",
+          "prompt_instruct": "What pets does Tomas prefer?",
+          "groundtruth": "dogs"
+        }
+      ],
+      "beliefs": {
+        "Aisha": "cats",
+        "Tomas": "dogs"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "sports",
+      "names": [
+        "Hiro",
+        "Maria"
+      ],
+      "transcript_labeled": [
+        "Hiro: I am Hiro.",
+        "Maria: I am Maria.",
+        "Hiro: I play tennis.",
+        "Maria: I play basketball."
+      ],
+      "transcript_unlabeled": [
+        "I am Hiro.",
+        "I am Maria.",
+        "I play tennis.",
+        "I play basketball."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What sports does Hiro prefer? Answer: Hiro prefers",
+          "prompt_instruct": "What sports does Hiro prefer?",
+          "groundtruth": "tennis"
+        },
+        {
+          "prompt": "What sports does Maria prefer? Answer: Maria prefers",
+          "prompt_instruct": "What sports does Maria prefer?",
+          "groundtruth": "basketball"
+        }
+      ],
+      "beliefs": {
+        "Hiro": "tennis",
+        "Maria": "basketball"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "food",
+      "names": [
+        "Priya",
+        "Luca"
+      ],
+      "transcript_labeled": [
+        "Priya: I am Priya.",
+        "Luca: I am Luca.",
+        "Priya: I prefer sushi.",
+        "Luca: I prefer pasta."
+      ],
+      "transcript_unlabeled": [
+        "I am Priya.",
+        "I am Luca.",
+        "I prefer sushi.",
+        "I prefer pasta."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What food does Priya prefer? Answer: Priya prefers",
+          "prompt_instruct": "What food does Priya prefer?",
+          "groundtruth": "sushi"
+        },
+        {
+          "prompt": "What food does Luca prefer? Answer: Luca prefers",
+          "prompt_instruct": "What food does Luca prefer?",
+          "groundtruth": "pasta"
+        }
+      ],
+      "beliefs": {
+        "Priya": "sushi",
+        "Luca": "pasta"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "colors",
+      "names": [
+        "Zanele",
+        "Bjorn"
+      ],
+      "transcript_labeled": [
+        "Zanele: I am Zanele.",
+        "Bjorn: I am Bjorn.",
+        "Zanele: I like blue.",
+        "Bjorn: I like green."
+      ],
+      "transcript_unlabeled": [
+        "I am Zanele.",
+        "I am Bjorn.",
+        "I like blue.",
+        "I like green."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What colors does Zanele prefer? Answer: Zanele prefers",
+          "prompt_instruct": "What colors does Zanele prefer?",
+          "groundtruth": "blue"
+        },
+        {
+          "prompt": "What colors does Bjorn prefer? Answer: Bjorn prefers",
+          "prompt_instruct": "What colors does Bjorn prefer?",
+          "groundtruth": "green"
+        }
+      ],
+      "beliefs": {
+        "Zanele": "blue",
+        "Bjorn": "green"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "music genres",
+      "names": [
+        "Jamal",
+        "Yuki"
+      ],
+      "transcript_labeled": [
+        "Jamal: I am Jamal.",
+        "Yuki: I am Yuki.",
+        "Jamal: I listen to jazz.",
+        "Yuki: I listen to hip hop."
+      ],
+      "transcript_unlabeled": [
+        "I am Jamal.",
+        "I am Yuki.",
+        "I listen to jazz.",
+        "I listen to hip hop."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What music genres does Jamal prefer? Answer: Jamal prefers",
+          "prompt_instruct": "What music genres does Jamal prefer?",
+          "groundtruth": "jazz"
+        },
+        {
+          "prompt": "What music genres does Yuki prefer? Answer: Yuki prefers",
+          "prompt_instruct": "What music genres does Yuki prefer?",
+          "groundtruth": "hip hop"
+        }
+      ],
+      "beliefs": {
+        "Jamal": "jazz",
+        "Yuki": "hip hop"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "seasons",
+      "names": [
+        "Elena",
+        "Musa"
+      ],
+      "transcript_labeled": [
+        "Elena: I am Elena.",
+        "Musa: I am Musa.",
+        "Elena: I love autumn.",
+        "Musa: I love summer."
+      ],
+      "transcript_unlabeled": [
+        "I am Elena.",
+        "I am Musa.",
+        "I love autumn.",
+        "I love summer."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What seasons does Elena prefer? Answer: Elena prefers",
+          "prompt_instruct": "What seasons does Elena prefer?",
+          "groundtruth": "autumn"
+        },
+        {
+          "prompt": "What seasons does Musa prefer? Answer: Musa prefers",
+          "prompt_instruct": "What seasons does Musa prefer?",
+          "groundtruth": "summer"
+        }
+      ],
+      "beliefs": {
+        "Elena": "autumn",
+        "Musa": "summer"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "hobbies",
+      "names": [
+        "Mei",
+        "Carlos"
+      ],
+      "transcript_labeled": [
+        "Mei: I am Mei.",
+        "Carlos: I am Carlos.",
+        "Mei: I enjoy gardening.",
+        "Carlos: I enjoy painting."
+      ],
+      "transcript_unlabeled": [
+        "I am Mei.",
+        "I am Carlos.",
+        "I enjoy gardening.",
+        "I enjoy painting."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What hobbies does Mei prefer? Answer: Mei prefers",
+          "prompt_instruct": "What hobbies does Mei prefer?",
+          "groundtruth": "gardening"
+        },
+        {
+          "prompt": "What hobbies does Carlos prefer? Answer: Carlos prefers",
+          "prompt_instruct": "What hobbies does Carlos prefer?",
+          "groundtruth": "painting"
+        }
+      ],
+      "beliefs": {
+        "Mei": "gardening",
+        "Carlos": "painting"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "school subjects",
+      "names": [
+        "Fatima",
+        "Noah"
+      ],
+      "transcript_labeled": [
+        "Fatima: I am Fatima.",
+        "Noah: I am Noah.",
+        "Fatima: I prefer physics.",
+        "Noah: I prefer history."
+      ],
+      "transcript_unlabeled": [
+        "I am Fatima.",
+        "I am Noah.",
+        "I prefer physics.",
+        "I prefer history."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What school subjects does Fatima prefer? Answer: Fatima prefers",
+          "prompt_instruct": "What school subjects does Fatima prefer?",
+          "groundtruth": "physics"
+        },
+        {
+          "prompt": "What school subjects does Noah prefer? Answer: Noah prefers",
+          "prompt_instruct": "What school subjects does Noah prefer?",
+          "groundtruth": "history"
+        }
+      ],
+      "beliefs": {
+        "Fatima": "physics",
+        "Noah": "history"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "drinks",
+      "names": [
+        "Sergei",
+        "Amara"
+      ],
+      "transcript_labeled": [
+        "Sergei: I am Sergei.",
+        "Amara: I am Amara.",
+        "Sergei: I drink coffee.",
+        "Amara: I drink tea."
+      ],
+      "transcript_unlabeled": [
+        "I am Sergei.",
+        "I am Amara.",
+        "I drink coffee.",
+        "I drink tea."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What drinks does Sergei prefer? Answer: Sergei prefers",
+          "prompt_instruct": "What drinks does Sergei prefer?",
+          "groundtruth": "coffee"
+        },
+        {
+          "prompt": "What drinks does Amara prefer? Answer: Amara prefers",
+          "prompt_instruct": "What drinks does Amara prefer?",
+          "groundtruth": "tea"
+        }
+      ],
+      "beliefs": {
+        "Sergei": "coffee",
+        "Amara": "tea"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "transportation",
+      "names": [
+        "Giulia",
+        "Ahmed"
+      ],
+      "transcript_labeled": [
+        "Giulia: I am Giulia.",
+        "Ahmed: I am Ahmed.",
+        "Giulia: I take the bus.",
+        "Ahmed: I ride a bike."
+      ],
+      "transcript_unlabeled": [
+        "I am Giulia.",
+        "I am Ahmed.",
+        "I take the bus.",
+        "I ride a bike."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What transportation mode does Giulia prefer? Answer: Giulia prefers",
+          "prompt_instruct": "What transportation mode does Giulia prefer?",
+          "groundtruth": "bus"
+        },
+        {
+          "prompt": "What transportation mode does Ahmed prefer? Answer: Ahmed prefers",
+          "prompt_instruct": "What transportation mode does Ahmed prefer?",
+          "groundtruth": "bike"
+        }
+      ],
+      "beliefs": {
+        "Giulia": "bus",
+        "Ahmed": "bike"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "music genre",
+      "names": [
+        "Diego",
+        "Maya",
+        "Nora"
+      ],
+      "transcript_labeled": [
+        "Diego: I am Diego.",
+        "Maya: I am Maya.",
+        "Diego: I mostly listen to hip-hop.",
+        "Maya: I like classical music. Nora prefers indie rock, right?",
+        "Nora: Hi Diego, that's right - I prefer indie rock.",
+        "Diego: Maya, do you ever listen to hip-hop?",
+        "Maya: Not really; classical is still my favorite."
+      ],
+      "transcript_unlabeled": [
+        "I am Diego.",
+        "I am Maya.",
+        "I mostly listen to hip-hop.",
+        "I like classical music. Nora prefers indie rock, right?",
+        "Hi Diego, that's right - I prefer indie rock.",
+        "Maya, do you ever listen to hip-hop?",
+        "Not really; classical is still my favorite."
+      ],
+      "turn_sequence": [
+        "Diego",
+        "Maya",
+        "Diego",
+        "Maya",
+        "Nora",
+        "Diego",
+        "Maya"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Diego: Self-introduction anchor",
+        "[Line 2] Maya: Self-introduction anchor, different from Line 1",
+        "[Line 3] Diego: Round-robin assumption returns to the first speaker",
+        "[Line 4] Maya: Round-robin assumption returns to the second speaker; she mentions Nora as a third party and asks for confirmation",
+        "[Line 5] Nora: Confirms the statement about herself and greets Diego, so this must be Nora entering; the vocative selects Diego for the next turn",
+        "[Line 6] Diego: Responds after being addressed and asks Maya a direct question, selecting Maya next",
+        "[Line 7] Maya: Answers Diego's question and reaffirms her preference"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What does Diego prefer? Answer: Diego prefers",
+          "prompt_instruct": "What does Diego prefer?",
+          "groundtruth": "hip-hop"
+        },
+        {
+          "prompt": "What music genre does Maya prefer? Answer: Maya prefers",
+          "prompt_instruct": "What music genre does Maya prefer?",
+          "groundtruth": "classical"
+        },
+        {
+          "prompt": "What music genre does Nora prefer? Answer: Nora prefers",
+          "prompt_instruct": "What music genre does Nora prefer?",
+          "groundtruth": "indie rock"
+        }
+      ],
+      "beliefs": {
+        "Diego": "hip-hop",
+        "Maya": "classical",
+        "Nora": "indie rock"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "movie genre",
+      "names": [
+        "Priya",
+        "Lucas",
+        "Hana"
+      ],
+      "transcript_labeled": [
+        "Priya: I am Priya.",
+        "Lucas: I am Lucas.",
+        "Priya: I love science fiction movies the most.",
+        "Lucas: I am more into comedies. I heard Hana likes documentaries.",
+        "Hana: Yes, I prefer documentaries.",
+        "Lucas: Priya, between sci-fi and comedy, which would you pick for tonight?",
+        "Priya: Still sci-fi."
+      ],
+      "transcript_unlabeled": [
+        "I am Priya.",
+        "I am Lucas.",
+        "I love science fiction movies the most.",
+        "I am more into comedies. I heard Hana likes documentaries.",
+        "Yes, I prefer documentaries.",
+        "Priya, between sci-fi and comedy, which would you pick for tonight?",
+        "Still sci-fi."
+      ],
+      "turn_sequence": [
+        "Priya",
+        "Lucas",
+        "Priya",
+        "Lucas",
+        "Hana",
+        "Lucas",
+        "Priya"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Priya: Self-introduction anchor",
+        "[Line 2] Lucas: Self-introduction anchor, different from Line 1",
+        "[Line 3] Priya: Round-robin assumption returns to the first speaker",
+        "[Line 4] Lucas: Round-robin assumption returns to the second speaker; he introduces Hana as a third party and states her supposed preference",
+        "[Line 5] Hana: Confirms the statement about Hana and greets Lucas, selecting Lucas for the next turn",
+        "[Line 6] Lucas: Addresses Priya with a question, selecting Priya next",
+        "[Line 7] Priya: Answers Lucas's question and reaffirms her preference"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What movie genre does Priya prefer? Answer: Priya prefers",
+          "prompt_instruct": "What movie genre does Priya prefer?",
+          "groundtruth": "science fiction; sci-fi"
+        },
+        {
+          "prompt": "What movie genre does Lucas prefer? Answer: Lucas prefers",
+          "prompt_instruct": "What movie genre does Lucas prefer?",
+          "groundtruth": "comedies; comedy"
+        },
+        {
+          "prompt": "What movie genre does Hana prefer? Answer: Hana prefers",
+          "prompt_instruct": "What movie genre does Hana prefer?",
+          "groundtruth": "documentary; documentaries"
+        }
+      ],
+      "beliefs": {
+        "Priya": "science fiction",
+        "Lucas": "comedies",
+        "Hana": "documentaries"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "vacation type",
+      "names": [
+        "Omar",
+        "Jenna",
+        "Kai"
+      ],
+      "transcript_labeled": [
+        "Omar: I am Omar.",
+        "Jenna: I am Jenna.",
+        "Omar: I prefer beach vacations.",
+        "Jenna: I like mountain trips. I think Kai prefers city breaks.",
+        "Kai: That's right, I enjoy city breaks most.",
+        "Omar: Sounds good - beach for me, mountains for you, city for Kai."
+      ],
+      "transcript_unlabeled": [
+        "I am Omar.",
+        "I am Jenna.",
+        "I prefer beach vacations.",
+        "I like mountain trips. I think Kai prefers city breaks.",
+        "That's right, I enjoy city breaks most.",
+        "Sounds good - beach for me, mountains for you, city for Kai."
+      ],
+      "turn_sequence": [
+        "Omar",
+        "Jenna",
+        "Omar",
+        "Jenna",
+        "Kai",
+        "Omar"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Omar: Self-introduction anchor",
+        "[Line 2] Jenna: Self-introduction anchor, different from Line 1",
+        "[Line 3] Omar: Round-robin assumption returns to the first speaker",
+        "[Line 4] Jenna: Round-robin assumption returns to the second speaker; she mentions Kai as a third party with a preference",
+        "[Line 5] Kai: Confirms the statement about himself and greets Omar, selecting Omar next",
+        "[Line 6] Omar: Responds after being selected by the vocative and summarizes each person's preference"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What type of vacation does Omar prefer? Answer: Omar prefers",
+          "prompt_instruct": "What type of vacation does Omar prefer?",
+          "groundtruth": "beach"
+        },
+        {
+          "prompt": "What type of vacation does Jenna prefer? Answer: Jenna prefers",
+          "prompt_instruct": "What type of vacation does Jenna prefer?",
+          "groundtruth": "mountain"
+        },
+        {
+          "prompt": "What type of vacation does Kai prefer? Answer: Kai prefers",
+          "prompt_instruct": "What type of vacation does Kai prefer?",
+          "groundtruth": "city"
+        }
+      ],
+      "beliefs": {
+        "Omar": "beach vacations",
+        "Jenna": "mountain trips",
+        "Kai": "city breaks"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "book genre",
+      "names": [
+        "Yuki",
+        "Marco",
+        "Lina"
+      ],
+      "transcript_labeled": [
+        "Yuki: I am Yuki.",
+        "Marco: I am Marco.",
+        "Yuki: My favorite book genre is mystery.",
+        "Marco: I like science fiction. Lina, you prefer historical novels, don't you?",
+        "Lina: Yes, I prefer historical novels.",
+        "Yuki: Marco, between sci-fi and mystery, I still choose mystery.",
+        "Marco: Makes sense; sci-fi is my pick."
+      ],
+      "transcript_unlabeled": [
+        "I am Yuki.",
+        "I am Marco.",
+        "My favorite book genre is mystery.",
+        "I like science fiction. Lina, you prefer historical novels, don't you?",
+        "Yes, I prefer historical novels.",
+        "Marco, between sci-fi and mystery, I still choose mystery.",
+        "Makes sense; sci-fi is my pick."
+      ],
+      "turn_sequence": [
+        "Yuki",
+        "Marco",
+        "Yuki",
+        "Marco",
+        "Lina",
+        "Yuki",
+        "Marco"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Yuki: Self-introduction anchor",
+        "[Line 2] Marco: Self-introduction anchor, different from Line 1",
+        "[Line 3] Yuki: Round-robin assumption returns to the first speaker",
+        "[Line 4] Marco: Round-robin assumption returns to the second speaker; he addresses Lina with a tag question about her preference",
+        "[Line 5] Lina: Confirms the claim about herself and greets Yuki, selecting Yuki next",
+        "[Line 6] Yuki: Addresses Marco directly, selecting him for the next turn",
+        "[Line 7] Marco: Responds and reaffirms his preference"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What book genre does Yuki prefer? Answer: Yuki prefers",
+          "prompt_instruct": "What book genre does Yuki prefer?",
+          "groundtruth": "mystery"
+        },
+        {
+          "prompt": "What book genre does Marco prefer? Answer: Marco prefers",
+          "prompt_instruct": "What book genre does Marco prefer?",
+          "groundtruth": "science fiction; sci-fi"
+        },
+        {
+          "prompt": "What book genre does Lina prefer? Answer: Lina prefers",
+          "prompt_instruct": "What book genre does Lina prefer?",
+          "groundtruth": "historical novels"
+        }
+      ],
+      "beliefs": {
+        "Yuki": "mystery",
+        "Marco": "science fiction",
+        "Lina": "historical novels"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "hobby",
+      "names": [
+        "Tara",
+        "Eli",
+        "Quinn"
+      ],
+      "transcript_labeled": [
+        "Tara: I am Tara.",
+        "Eli: I am Eli.",
+        "Tara: My favorite hobby is painting.",
+        "Eli: I prefer cycling. Quinn is into baking, right?",
+        "Quinn: Hi Tara, yes, baking is my favorite hobby.",
+        "Tara: Eli, didn't you used to prefer running?",
+        "Eli: I did, but cycling is still my top hobby now."
+      ],
+      "transcript_unlabeled": [
+        "I am Tara.",
+        "I am Eli.",
+        "My favorite hobby is painting.",
+        "I prefer cycling. Quinn is into baking, right?",
+        "Hi Tara, yes, baking is my favorite hobby.",
+        "Eli, didn't you used to prefer running?",
+        "I did, but cycling is still my top hobby now."
+      ],
+      "turn_sequence": [
+        "Tara",
+        "Eli",
+        "Tara",
+        "Eli",
+        "Quinn",
+        "Tara",
+        "Eli"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Tara: Self-introduction anchor",
+        "[Line 2] Eli: Self-introduction anchor, different from Line 1",
+        "[Line 3] Tara: Round-robin assumption returns to the first speaker",
+        "[Line 4] Eli: Round-robin assumption returns to the second speaker; he mentions Quinn as a third party and asks for confirmation",
+        "[Line 5] Quinn: Confirms the statement about Quinn and greets Tara, selecting Tara next",
+        "[Line 6] Tara: Addresses Eli by name with a question, selecting Eli next",
+        "[Line 7] Eli: Answers Tara's question and restates his preference"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What hobby does Tara prefer? Answer: Tara prefers",
+          "prompt_instruct": "What hobby does Tara prefer?",
+          "groundtruth": "painting"
+        },
+        {
+          "prompt": "What hobby does Eli prefer? Answer: Eli prefers",
+          "prompt_instruct": "What hobby does Eli prefer?",
+          "groundtruth": "cycling"
+        },
+        {
+          "prompt": "What hobby does Quinn prefer? Answer: Quinn prefers",
+          "prompt_instruct": "What hobby does Quinn prefer?",
+          "groundtruth": "baking"
+        }
+      ],
+      "beliefs": {
+        "Tara": "painting",
+        "Eli": "cycling",
+        "Quinn": "baking"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "cuisine",
+      "names": [
+        "Ava",
+        "Mason",
+        "Olivia"
+      ],
+      "transcript_labeled": [
+        "Ava: I am Ava.",
+        "Mason: I am Mason.",
+        "Ava: My favorite cuisine is Thai.",
+        "Mason: I prefer Italian. I heard Olivia loves Mexican.",
+        "Olivia: Hi Ava! Yes, I love Mexican food the most.",
+        "Ava: Mason, between pizza and pasta, which do you like more?",
+        "Mason: Pizza, but Italian overall is my favorite."
+      ],
+      "transcript_unlabeled": [
+        "I am Ava.",
+        "I am Mason.",
+        "My favorite cuisine is Thai.",
+        "I prefer Italian. I heard Olivia loves Mexican.",
+        "Hi Ava! Yes, I love Mexican food the most.",
+        "Mason, between pizza and pasta, which do you like more?",
+        "Pizza, but Italian overall is my favorite."
+      ],
+      "turn_sequence": [
+        "Ava",
+        "Mason",
+        "Ava",
+        "Mason",
+        "Olivia",
+        "Ava",
+        "Mason"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Ava: Self-introduction anchor.",
+        "[Line 2] Mason: Self-introduction anchor, different from Line 1.",
+        "[Line 3] Ava: Round-robin assumption returns to first speaker.",
+        "[Line 4] Mason: Round-robin assumption returns to second speaker and mentions Olivia as a third party.",
+        "[Line 5] Olivia: Confirms the statement about herself and greets Ava, selecting Ava for the next turn.",
+        "[Line 6] Ava: Responds and asks Mason a directed question, selecting Mason next.",
+        "[Line 7] Mason: Answers Ava's question and reiterates his preference."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What cuisine does Ava prefer? Answer: Ava prefers",
+          "prompt_instruct": "What cuisine does Ava prefer?",
+          "groundtruth": "Thai"
+        },
+        {
+          "prompt": "What cuisine does Mason prefer? Answer: Mason prefers",
+          "prompt_instruct": "What cuisine does Mason prefer?",
+          "groundtruth": "Italian"
+        },
+        {
+          "prompt": "What cuisine does Olivia prefer? Answer: Olivia prefers",
+          "prompt_instruct": "What cuisine does Olivia prefer?",
+          "groundtruth": "Mexican"
+        }
+      ],
+      "beliefs": {
+        "Ava": "Thai",
+        "Mason": "Italian",
+        "Olivia": "Mexican"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "book genre",
+      "names": [
+        "Ethan",
+        "Sophia",
+        "Logan"
+      ],
+      "transcript_labeled": [
+        "Ethan: I am Ethan.",
+        "Sophia: I am Sophia.",
+        "Ethan: I mostly read science fiction.",
+        "Sophia: I like mystery more. Logan, didn't you say you prefer fantasy?",
+        "Logan: That's right, I prefer fantasy novels.",
+        "Sophia: Ethan, which sci-fi author do you like most?",
+        "Ethan: Asimov, but in genre terms it's sci-fi for me."
+      ],
+      "transcript_unlabeled": [
+        "I am Ethan.",
+        "I am Sophia.",
+        "I mostly read science fiction.",
+        "I like mystery more. Logan, didn't you say you prefer fantasy?",
+        "That's right, I prefer fantasy novels.",
+        "Ethan, which sci-fi author do you like most?",
+        "Asimov, but in genre terms it's sci-fi for me."
+      ],
+      "turn_sequence": [
+        "Ethan",
+        "Sophia",
+        "Ethan",
+        "Sophia",
+        "Logan",
+        "Sophia",
+        "Ethan"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Ethan: Self-introduction anchor.",
+        "[Line 2] Sophia: Self-introduction anchor, different from Line 1.",
+        "[Line 3] Ethan: Round-robin assumption returns to first speaker.",
+        "[Line 4] Sophia: Round-robin assumption returns to second speaker and asks Logan about his known preference.",
+        "[Line 5] Logan: Confirms the statement about himself and states his preference.",
+        "[Line 6] Sophia: Addresses Ethan by name with a question, selecting Ethan next.",
+        "[Line 7] Ethan: Answers Sophia's question and reiterates his preference."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What book genre does Ethan prefer? Answer: Ethan prefers",
+          "prompt_instruct": "What book genre does Ethan prefer?",
+          "groundtruth": "science fiction; sci-fi"
+        },
+        {
+          "prompt": "What book genre does Sophia prefer? Answer: Sophia prefers",
+          "prompt_instruct": "What book genre does Sophia prefer?",
+          "groundtruth": "mystery"
+        },
+        {
+          "prompt": "What book genre does Logan prefer? Answer: Logan prefers",
+          "prompt_instruct": "What book genre does Logan prefer?",
+          "groundtruth": "fantasy"
+        }
+      ],
+      "beliefs": {
+        "Ethan": "science fiction",
+        "Sophia": "mystery",
+        "Logan": "fantasy"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "beverage",
+      "names": [
+        "Chloe",
+        "James",
+        "Lucas"
+      ],
+      "transcript_labeled": [
+        "Chloe: I am Chloe.",
+        "James: I am James.",
+        "Chloe: I like iced coffee the most.",
+        "James: Tea is my pick. I heard Lucas always orders fresh orange juice.",
+        "Lucas: Yes, that's me; orange juice is my favorite drink."
+      ],
+      "transcript_unlabeled": [
+        "I am Chloe.",
+        "I am James.",
+        "I like iced coffee the most.",
+        "Tea is my pick. I heard Lucas always orders fresh orange juice.",
+        "Yes, that's me; orange juice is my favorite drink."
+      ],
+      "turn_sequence": [
+        "Chloe",
+        "James",
+        "Chloe",
+        "James",
+        "Lucas"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Chloe: Self-introduction anchor.",
+        "[Line 2] James: Self-introduction anchor, different from Line 1.",
+        "[Line 3] Chloe: Round-robin assumption returns to first speaker.",
+        "[Line 4] James: Round-robin assumption returns to second speaker and mentions Lucas as a third party.",
+        "[Line 5] Lucas: Confirms the statement about himself, a non-round-robin entry after early alternation."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What beverage does Chloe prefer? Answer: Chloe prefers",
+          "prompt_instruct": "What beverage does Chloe prefer?",
+          "groundtruth": "iced coffee"
+        },
+        {
+          "prompt": "What beverage does James prefer? Answer: James prefers",
+          "prompt_instruct": "What beverage does James prefer?",
+          "groundtruth": "tea"
+        },
+        {
+          "prompt": "What beverage does Lucas prefer? Answer: Lucas prefers",
+          "prompt_instruct": "What beverage does Lucas prefer?",
+          "groundtruth": "orange juice"
+        }
+      ],
+      "beliefs": {
+        "Chloe": "iced coffee",
+        "James": "tea",
+        "Lucas": "orange juice"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "travel type",
+      "names": [
+        "Nora",
+        "Henry",
+        "Zoe"
+      ],
+      "transcript_labeled": [
+        "Nora: I am Nora.",
+        "Henry: I am Henry.",
+        "Nora: I prefer mountain retreats.",
+        "Henry: I like city breaks. Zoe, you're into beaches, right?",
+        "Zoe: Right, beaches are my favorite. Hi Henry!",
+        "Henry: Nora, would you ever swap mountains for a beach trip?",
+        "Nora: Sometimes, but mountains are still my top choice."
+      ],
+      "transcript_unlabeled": [
+        "I am Nora.",
+        "I am Henry.",
+        "I prefer mountain retreats.",
+        "I like city breaks. Zoe, you're into beaches, right?",
+        "Right, beaches are my favorite. Hi Henry!",
+        "Nora, would you ever swap mountains for a beach trip?",
+        "Sometimes, but mountains are still my top choice."
+      ],
+      "turn_sequence": [
+        "Nora",
+        "Henry",
+        "Nora",
+        "Henry",
+        "Zoe",
+        "Henry",
+        "Nora"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Nora: Self-introduction anchor.",
+        "[Line 2] Henry: Self-introduction anchor, different from Line 1.",
+        "[Line 3] Nora: Round-robin assumption returns to first speaker.",
+        "[Line 4] Henry: Round-robin assumption returns to second speaker; he mentions Zoe and asks her a question.",
+        "[Line 5] Zoe: Confirms the statement about herself and greets Henry, selecting Henry next.",
+        "[Line 6] Henry: Addresses Nora with a question, selecting her next.",
+        "[Line 7] Nora: Answers Henry and reaffirms her preference."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What type of travel does Nora prefer? Answer: Nora prefers",
+          "prompt_instruct": "What type of travel does Nora prefer?",
+          "groundtruth": "mountain"
+        },
+        {
+          "prompt": "What type of travel does Henry prefer? Answer: Henry prefers",
+          "prompt_instruct": "What type of travel does Henry prefer?",
+          "groundtruth": "city"
+        },
+        {
+          "prompt": "What type of travel does Zoe prefer? Answer: Zoe prefers",
+          "prompt_instruct": "What type of travel does Zoe prefer?",
+          "groundtruth": "beach"
+        }
+      ],
+      "beliefs": {
+        "Nora": "mountain",
+        "Henry": "city",
+        "Zoe": "beach"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "musical instrument",
+      "names": [
+        "Ryan",
+        "Mia",
+        "Caleb"
+      ],
+      "transcript_labeled": [
+        "Ryan: I am Ryan.",
+        "Mia: I am Mia.",
+        "Ryan: I like playing the guitar.",
+        "Mia: I prefer the piano. Caleb told me he loves drums.",
+        "Caleb: Yes, drums are my favorite to play. Hi Mia!",
+        "Mia: Ryan, between acoustic and electric, which guitar do you prefer?",
+        "Ryan: Electric, but guitar is my favorite instrument."
+      ],
+      "transcript_unlabeled": [
+        "I am Ryan.",
+        "I am Mia.",
+        "I like playing the guitar.",
+        "I prefer the piano. Caleb told me he loves drums.",
+        "Yes, drums are my favorite to play. Hi Mia!",
+        "Ryan, between acoustic and electric, which guitar do you prefer?",
+        "Electric, but guitar is my favorite instrument."
+      ],
+      "turn_sequence": [
+        "Ryan",
+        "Mia",
+        "Ryan",
+        "Mia",
+        "Caleb",
+        "Mia",
+        "Ryan"
+      ],
+      "disambiguation_reasoning": [
+        "[Line 1] Ryan: Self-introduction anchor.",
+        "[Line 2] Mia: Self-introduction anchor, different from Line 1.",
+        "[Line 3] Ryan: Round-robin assumption returns to first speaker.",
+        "[Line 4] Mia: Round-robin assumption returns to second speaker; she mentions Caleb's preference.",
+        "[Line 5] Caleb: Confirms the statement about himself and greets Mia, selecting Mia next.",
+        "[Line 6] Mia: Addresses Ryan with a question, selecting him next.",
+        "[Line 7] Ryan: Answers Mia's question and restates his preference."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What musical instrument does Ryan prefer? Answer: Ryan prefers",
+          "prompt_instruct": "What musical instrument does Ryan prefer?",
+          "groundtruth": "guitar"
+        },
+        {
+          "prompt": "What musical instrument does Mia prefer? Answer: Mia prefers",
+          "prompt_instruct": "What musical instrument does Mia prefer?",
+          "groundtruth": "piano"
+        },
+        {
+          "prompt": "What musical instrument does Caleb prefer? Answer: Caleb prefers",
+          "prompt_instruct": "What musical instrument does Caleb prefer?",
+          "groundtruth": "drums"
+        }
+      ],
+      "beliefs": {
+        "Ryan": "guitar",
+        "Mia": "piano",
+        "Caleb": "drums"
+      }
+    }
+  ]
+}

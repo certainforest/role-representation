@@ -1,8 +1,12 @@
 import json
 import requests
+#vllm serve Qwen/Qwen2-1.5B --port 5555
+#vllm serve Qwen/Qwen2-1.5B-Instruct --port 5555
 #vllm serve Qwen/Qwen2-7B --port 5555
+#vllm serve Qwen/Qwen2-7B-Instruct --port 5555
 #vllm serve Qwen/QWQ-32B --tensor-parallel-size 2 --port 5555
-VLLM_URL = "http://localhost:5555/v1/chat/completions"
+#vllm serve allenai/Olmo-3-1025-7B --port 5555
+#vllm serve allenai/Olmo-3-1125-32B --tensor-parallel-size 2 --port 5555
 
 # Read from JSON file (array of items)
 def load_prompt_data(json_path):
@@ -13,6 +17,15 @@ def load_prompt_data(json_path):
 # Construct prompt from transcript and qa pair
 def construct_prompt(transcript, qa_prompt):
     transcript_string = '\n'.join(f'"{line}"' for line in transcript)
+    prompt = (
+        f"This is a transcript of a conversation.\n\n"
+        f"{transcript_string}\n\n"
+        f"{qa_prompt}"
+    )
+    return prompt
+
+def construct_prompt_labeled(transcript, qa_prompt):
+    transcript_string = '\n'.join(f'{line}' for line in transcript)
     prompt = (
         f"This is a transcript of a conversation.\n\n"
         f"{transcript_string}\n\n"
@@ -53,9 +66,9 @@ def generate_response(VLLM_URL, model_name, prompt):
 
 # Main execution
 def main():
-    model_name = "Qwen/Qwen2-7B"   # eg. "Qwen/Qwen2-7B" or "Qwen/QWQ-32B"
-    model_type = "base" #instruct or base
-    prompt_path = "simple_prompt.json"
+    model_name = "Qwen/Qwen2-1.5B-Instruct" #"Qwen/Qwen2-7B"   # eg. "Qwen/Qwen2-7B" or "Qwen/QWQ-32B"
+    model_type = "instruct" #instruct or base
+    prompt_path = "labeled_simple_prompt.json"
     result_path = f"{model_name.split('/')[1]}_{prompt_path}_results.json"
     data_items = load_prompt_data(prompt_path)
     print(f"Loaded {len(data_items)} data items from {prompt_path}")
@@ -65,7 +78,7 @@ def main():
         qa_pairs = data["qa_pairs"]
         for qa in qa_pairs:
             if model_type == "instruct":
-                prompt = construct_prompt(transcript, qa["prompt_instruct"])
+                prompt = construct_prompt_labeled(transcript, qa["prompt_instruct"])
                 print("prompt:",prompt)
                 VLLM_URL = "http://localhost:5555/v1/chat/completions"
                 answer = generate_response_instruct(VLLM_URL, model_name, prompt)

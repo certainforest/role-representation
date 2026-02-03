@@ -1,0 +1,218 @@
+{
+  "metadata": {
+    "description": "Speaker attribution dataset for pragmatic inference evaluation",
+    "levels": {
+      "1_and_2": "2 speakers, minimal structure, labeled vs unlabeled comparison",
+      "2.5": "3 speakers, non-round-robin, requires discourse cue tracking"
+    },
+    "total_examples": 4
+  },
+  "examples": [
+    {
+      "level": "1_and_2",
+      "topic": "sports",
+      "names": [
+        "Lucas",
+        "Maya"
+      ],
+      "transcript_labeled": [
+        "Lucas: I am Lucas.",
+        "Maya: I am Maya.",
+        "Lucas: I prefer basketball.",
+        "Maya: I prefer soccer."
+      ],
+      "transcript_unlabeled": [
+        "I am Lucas.",
+        "I am Maya.",
+        "I prefer basketball.",
+        "I prefer soccer."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What does Lucas prefer? Answer: Lucas prefers",
+          "prompt_instruct": "What does Lucas prefer?",
+          "groundtruth": "basketball"
+        },
+        {
+          "prompt": "What does Maya prefer? Answer: Maya prefers",
+          "prompt_instruct": "What does Maya prefer?",
+          "groundtruth": "soccer"
+        }
+      ],
+      "beliefs": {
+        "Lucas": "basketball",
+        "Maya": "soccer"
+      }
+    },
+    {
+      "level": "1_and_2",
+      "topic": "transportation",
+      "names": [
+        "Liu",
+        "Anneke"
+      ],
+      "transcript_labeled": [
+        "Liu: I am Liu.",
+        "Anneke: I am Anneke.",
+        "Liu: I prefer bicycles.",
+        "Anneke: I prefer electric scooters."
+      ],
+      "transcript_unlabeled": [
+        "I am Liu.",
+        "I am Anneke.",
+        "I prefer bicycles.",
+        "I prefer electric scooters."
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What does Liu prefer? Answer: Liu prefers",
+          "prompt_instruct": "What does Liu prefer?",
+          "groundtruth": "bicycles"
+        },
+        {
+          "prompt": "What does Anneke prefer? Answer: Anneke prefers",
+          "prompt_instruct": "What does Anneke prefer?",
+          "groundtruth": "electric scooters"
+        }
+      ],
+      "beliefs": {
+        "Liu": "bicycles",
+        "Anneke": "electric scooters"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "music genre",
+      "names": [
+        "Sophia",
+        "Ethan",
+        "Olivia"
+      ],
+      "transcript_labeled": [
+        "Sophia: I am Sophia.",
+        "Ethan: I am Ethan.",
+        "Sophia: I love jazz music.",
+        "Ethan: That's interesting! I think rock is amazing. Olivia, do you like any of these?",
+        "Olivia: Actually, I prefer classical music.",
+        "Ethan: Classical is timeless! Sophia, don't you enjoy classical pieces sometimes?",
+        "Sophia: I do, but nothing beats a great jazz performance for me!"
+      ],
+      "transcript_unlabeled": [
+        "I am Sophia.",
+        "I am Ethan.",
+        "I love jazz music.",
+        "That's interesting! I think rock is amazing. Olivia, do you like any of these?",
+        "Actually, I prefer classical music.",
+        "Classical is timeless! Sophia, don't you enjoy classical pieces sometimes?",
+        "I do, but nothing beats a great jazz performance for me!"
+      ],
+      "turn_sequence": [
+        "Sophia",
+        "Ethan",
+        "Sophia",
+        "Ethan",
+        "Olivia",
+        "Ethan",
+        "Sophia"
+      ],
+      "disambiguation_reasoning": [
+        "Line 1 \u2192 Sophia: Self-introduction anchor",
+        "Line 2 \u2192 Ethan: Self-introduction anchor, must be different speaker from Line 1",
+        "Line 3 \u2192 Sophia: Round-robin assumption (back to first speaker)",
+        "Line 4 \u2192 Ethan: Round-robin assumption (back to second speaker), introduces Olivia as third party",
+        "Line 5 \u2192 Olivia: Speaker answers the question posed by Ethan about her preference, so this must be Olivia entering the conversation",
+        "Line 6 \u2192 Ethan: Ethan responds to Olivia's answer to his question. He addresses Sophia with 'Sophia, don't you enjoy classical pieces sometimes?', selecting Sophia for the next turn",
+        "Line 7 \u2192 Sophia: Sophia responds to Ethan's question about her enjoyment of classical music"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What does Sophia prefer? Answer: Sophia prefers",
+          "prompt_instruct": "What does Sophia prefer?",
+          "groundtruth": "jazz"
+        },
+        {
+          "prompt": "What does Ethan prefer? Answer: Ethan prefers",
+          "prompt_instruct": "What does Ethan prefer?",
+          "groundtruth": "rock"
+        },
+        {
+          "prompt": "What does Olivia prefer? Answer: Olivia prefers",
+          "prompt_instruct": "What does Olivia prefer?",
+          "groundtruth": "classical"
+        }
+      ],
+      "beliefs": {
+        "Sophia": "jazz",
+        "Ethan": "rock",
+        "Olivia": "classical"
+      }
+    },
+    {
+      "level": "2.5",
+      "topic": "music genre",
+      "names": [
+        "Olivia",
+        "Ethan",
+        "Sophia"
+      ],
+      "transcript_labeled": [
+        "Olivia: I am Olivia.",
+        "Ethan: I am Ethan.",
+        "Olivia: I love rock music the most.",
+        "Ethan: Really? I think jazz is better. Sophia, you enjoy jazz too, right?",
+        "Sophia: Hi Ethan! Yes, jazz is wonderful, but I have a soft spot for classical.",
+        "Ethan: Classical is nice! Olivia, have you ever tried listening to it?",
+        "Olivia: I have, but rock will always be my favorite!"
+      ],
+      "transcript_unlabeled": [
+        "I am Olivia.",
+        "I am Ethan.",
+        "I love rock music the most.",
+        "Really? I think jazz is better. Sophia, you enjoy jazz too, right?",
+        "Hi Ethan! Yes, jazz is wonderful, but I have a soft spot for classical.",
+        "Classical is nice! Olivia, have you ever tried listening to it?",
+        "I have, but rock will always be my favorite!"
+      ],
+      "turn_sequence": [
+        "Olivia",
+        "Ethan",
+        "Olivia",
+        "Ethan",
+        "Sophia",
+        "Ethan",
+        "Olivia"
+      ],
+      "disambiguation_reasoning": [
+        "Line 1 \u2192 Olivia: Self-introduction anchor",
+        "Line 2 \u2192 Ethan: Self-introduction anchor, must be different speaker from Line 1",
+        "Line 3 \u2192 Olivia: Round-robin assumption (back to first speaker)",
+        "Line 4 \u2192 Ethan: Round-robin assumption (back to second speaker), introduces Sophia as third party",
+        "Line 5 \u2192 Sophia: Speaker confirms 'Yes, jazz is wonderful' (agreeing with Ethan's mention of Sophia's preference), so this must be Sophia entering the conversation and selecting Ethan for the next turn by greeting 'Hi Ethan!'",
+        "Line 6 \u2192 Ethan: Ethan responds to Sophia's music preference and addresses Olivia with 'Olivia, have you ever tried listening to it?', selecting Olivia for the next turn",
+        "Line 7 \u2192 Olivia: Olivia responds to Ethan's question about her experience with classical music"
+      ],
+      "qa_pairs": [
+        {
+          "prompt": "What does Olivia prefer? Answer: Olivia prefers",
+          "prompt_instruct": "What does Olivia prefer?",
+          "groundtruth": "rock"
+        },
+        {
+          "prompt": "What does Ethan prefer? Answer: Ethan prefers",
+          "prompt_instruct": "What does Ethan prefer?",
+          "groundtruth": "jazz"
+        },
+        {
+          "prompt": "What does Sophia prefer? Answer: Sophia prefers",
+          "prompt_instruct": "What does Sophia prefer?",
+          "groundtruth": "classical"
+        }
+      ],
+      "beliefs": {
+        "Olivia": "rock",
+        "Ethan": "jazz",
+        "Sophia": "classical"
+      }
+    }
+  ]
+}

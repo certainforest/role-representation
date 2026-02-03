@@ -1,0 +1,774 @@
+{
+  "model": "Qwen/Qwen2-1.5B",
+  "model_type": "base",
+  "transcript_type": "unlabeled",
+  "accuracy_stats": {
+    "1_and_2_unlabeled": {
+      "correct": 7,
+      "total": 10
+    },
+    "2.5_unlabeled": {
+      "correct": 2,
+      "total": 10
+    }
+  },
+  "results": [
+    {
+      "example_idx": 0,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "pets",
+      "names": [
+        "Aisha",
+        "Tomas"
+      ],
+      "transcript": [
+        "I am Aisha.",
+        "I am Tomas.",
+        "I like cats.",
+        "I like dogs."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What pets does Aisha prefer? Answer: Aisha prefers",
+          "groundtruth": "cats",
+          "model_answer": "cats.\n\nHere's the reasoning:\n\n1. A",
+          "correct": true
+        },
+        {
+          "prompt": "What pets does Tomas prefer? Answer: Tomas prefers",
+          "groundtruth": "dogs",
+          "model_answer": "dogs.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 1,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "sports",
+      "names": [
+        "Hiro",
+        "Maria"
+      ],
+      "transcript": [
+        "I am Hiro.",
+        "I am Maria.",
+        "I play tennis.",
+        "I play basketball."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What sports does Hiro prefer? Answer: Hiro prefers",
+          "groundtruth": "tennis",
+          "model_answer": "basketball.",
+          "correct": false
+        },
+        {
+          "prompt": "What sports does Maria prefer? Answer: Maria prefers",
+          "groundtruth": "basketball",
+          "model_answer": "basketball.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 1,
+      "num_total": 2
+    },
+    {
+      "example_idx": 2,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "food",
+      "names": [
+        "Priya",
+        "Luca"
+      ],
+      "transcript": [
+        "I am Priya.",
+        "I am Luca.",
+        "I prefer sushi.",
+        "I prefer pasta."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What food does Priya prefer? Answer: Priya prefers",
+          "groundtruth": "sushi",
+          "model_answer": "sushi.\n\nStep 1: Identify the preferences of",
+          "correct": true
+        },
+        {
+          "prompt": "What food does Luca prefer? Answer: Luca prefers",
+          "groundtruth": "pasta",
+          "model_answer": "pasta.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 3,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "colors",
+      "names": [
+        "Zanele",
+        "Bjorn"
+      ],
+      "transcript": [
+        "I am Zanele.",
+        "I am Bjorn.",
+        "I like blue.",
+        "I like green."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What colors does Zanele prefer? Answer: Zanele prefers",
+          "groundtruth": "blue",
+          "model_answer": "blue.",
+          "correct": true
+        },
+        {
+          "prompt": "What colors does Bjorn prefer? Answer: Bjorn prefers",
+          "groundtruth": "green",
+          "model_answer": "blue.",
+          "correct": false
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 1,
+      "num_total": 2
+    },
+    {
+      "example_idx": 4,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "music genres",
+      "names": [
+        "Jamal",
+        "Yuki"
+      ],
+      "transcript": [
+        "I am Jamal.",
+        "I am Yuki.",
+        "I listen to jazz.",
+        "I listen to hip hop."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What music genres does Jamal prefer? Answer: Jamal prefers",
+          "groundtruth": "jazz",
+          "model_answer": "jazz and hip hop.",
+          "correct": true
+        },
+        {
+          "prompt": "What music genres does Yuki prefer? Answer: Yuki prefers",
+          "groundtruth": "hip hop",
+          "model_answer": "jazz and hip hop.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 5,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "seasons",
+      "names": [
+        "Elena",
+        "Musa"
+      ],
+      "transcript": [
+        "I am Elena.",
+        "I am Musa.",
+        "I love autumn.",
+        "I love summer."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What seasons does Elena prefer? Answer: Elena prefers",
+          "groundtruth": "autumn",
+          "model_answer": "autumn.",
+          "correct": true
+        },
+        {
+          "prompt": "What seasons does Musa prefer? Answer: Musa prefers",
+          "groundtruth": "summer",
+          "model_answer": "summer.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 6,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "hobbies",
+      "names": [
+        "Mei",
+        "Carlos"
+      ],
+      "transcript": [
+        "I am Mei.",
+        "I am Carlos.",
+        "I enjoy gardening.",
+        "I enjoy painting."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What hobbies does Mei prefer? Answer: Mei prefers",
+          "groundtruth": "gardening",
+          "model_answer": "gardening.",
+          "correct": true
+        },
+        {
+          "prompt": "What hobbies does Carlos prefer? Answer: Carlos prefers",
+          "groundtruth": "painting",
+          "model_answer": "painting.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 7,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "school subjects",
+      "names": [
+        "Fatima",
+        "Noah"
+      ],
+      "transcript": [
+        "I am Fatima.",
+        "I am Noah.",
+        "I prefer physics.",
+        "I prefer history."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What school subjects does Fatima prefer? Answer: Fatima prefers",
+          "groundtruth": "physics",
+          "model_answer": "physics.\n\nStep 1: Identify the preferences of",
+          "correct": true
+        },
+        {
+          "prompt": "What school subjects does Noah prefer? Answer: Noah prefers",
+          "groundtruth": "history",
+          "model_answer": "history.\n\nExplanation: In the conversation, Noah is",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 8,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "drinks",
+      "names": [
+        "Sergei",
+        "Amara"
+      ],
+      "transcript": [
+        "I am Sergei.",
+        "I am Amara.",
+        "I drink coffee.",
+        "I drink tea."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What drinks does Sergei prefer? Answer: Sergei prefers",
+          "groundtruth": "coffee",
+          "model_answer": "coffee.",
+          "correct": true
+        },
+        {
+          "prompt": "What drinks does Amara prefer? Answer: Amara prefers",
+          "groundtruth": "tea",
+          "model_answer": "tea.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 2,
+      "num_total": 2
+    },
+    {
+      "example_idx": 9,
+      "level": "1_and_2",
+      "transcript_type": "unlabeled",
+      "topic": "transportation",
+      "names": [
+        "Giulia",
+        "Ahmed"
+      ],
+      "transcript": [
+        "I am Giulia.",
+        "I am Ahmed.",
+        "I take the bus.",
+        "I ride a bike."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What transportation mode does Giulia prefer? Answer: Giulia prefers",
+          "groundtruth": "bus",
+          "model_answer": "to ride a bike.",
+          "correct": false
+        },
+        {
+          "prompt": "What transportation mode does Ahmed prefer? Answer: Ahmed prefers",
+          "groundtruth": "bike",
+          "model_answer": "to ride a bike.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 1,
+      "num_total": 2
+    },
+    {
+      "example_idx": 10,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "music genre",
+      "names": [
+        "Diego",
+        "Maya",
+        "Nora"
+      ],
+      "transcript": [
+        "I am Diego.",
+        "I am Maya.",
+        "I mostly listen to hip-hop.",
+        "I like classical music. Nora prefers indie rock, right?",
+        "Hi Diego, that's right - I prefer indie rock.",
+        "Maya, do you ever listen to hip-hop?",
+        "Not really; classical is still my favorite."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What does Diego prefer? Answer: Diego prefers",
+          "groundtruth": "hip-hop",
+          "model_answer": "classical music.",
+          "correct": false
+        },
+        {
+          "prompt": "What music genre does Maya prefer? Answer: Maya prefers",
+          "groundtruth": "classical",
+          "model_answer": "classical music.",
+          "correct": true
+        },
+        {
+          "prompt": "What music genre does Nora prefer? Answer: Nora prefers",
+          "groundtruth": "indie rock",
+          "model_answer": "classical music.",
+          "correct": false
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 1,
+      "num_total": 3
+    },
+    {
+      "example_idx": 11,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "movie genre",
+      "names": [
+        "Priya",
+        "Lucas",
+        "Hana"
+      ],
+      "transcript": [
+        "I am Priya.",
+        "I am Lucas.",
+        "I love science fiction movies the most.",
+        "I am more into comedies. I heard Hana likes documentaries.",
+        "Yes, I prefer documentaries.",
+        "Priya, between sci-fi and comedy, which would you pick for tonight?",
+        "Still sci-fi."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What movie genre does Priya prefer? Answer: Priya prefers",
+          "groundtruth": "science fiction; sci-fi",
+          "model_answer": "sci-fi movies.",
+          "correct": true
+        },
+        {
+          "prompt": "What movie genre does Lucas prefer? Answer: Lucas prefers",
+          "groundtruth": "comedies; comedy",
+          "model_answer": "science fiction movies.",
+          "correct": false
+        },
+        {
+          "prompt": "What movie genre does Hana prefer? Answer: Hana prefers",
+          "groundtruth": "documentary; documentaries",
+          "model_answer": "documentaries.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 2,
+      "num_total": 3
+    },
+    {
+      "example_idx": 12,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "vacation type",
+      "names": [
+        "Omar",
+        "Jenna",
+        "Kai"
+      ],
+      "transcript": [
+        "I am Omar.",
+        "I am Jenna.",
+        "I prefer beach vacations.",
+        "I like mountain trips. I think Kai prefers city breaks.",
+        "That's right, I enjoy city breaks most.",
+        "Sounds good - beach for me, mountains for you, city for Kai."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What type of vacation does Omar prefer? Answer: Omar prefers",
+          "groundtruth": "beach",
+          "model_answer": "beach vacations.",
+          "correct": true
+        },
+        {
+          "prompt": "What type of vacation does Jenna prefer? Answer: Jenna prefers",
+          "groundtruth": "mountain",
+          "model_answer": "beach vacations.",
+          "correct": false
+        },
+        {
+          "prompt": "What type of vacation does Kai prefer? Answer: Kai prefers",
+          "groundtruth": "city",
+          "model_answer": "city breaks.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 2,
+      "num_total": 3
+    },
+    {
+      "example_idx": 13,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "book genre",
+      "names": [
+        "Yuki",
+        "Marco",
+        "Lina"
+      ],
+      "transcript": [
+        "I am Yuki.",
+        "I am Marco.",
+        "My favorite book genre is mystery.",
+        "I like science fiction. Lina, you prefer historical novels, don't you?",
+        "Yes, I prefer historical novels.",
+        "Marco, between sci-fi and mystery, I still choose mystery.",
+        "Makes sense; sci-fi is my pick."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What book genre does Yuki prefer? Answer: Yuki prefers",
+          "groundtruth": "mystery",
+          "model_answer": "mystery.",
+          "correct": true
+        },
+        {
+          "prompt": "What book genre does Marco prefer? Answer: Marco prefers",
+          "groundtruth": "science fiction; sci-fi",
+          "model_answer": "mystery.",
+          "correct": false
+        },
+        {
+          "prompt": "What book genre does Lina prefer? Answer: Lina prefers",
+          "groundtruth": "historical novels",
+          "model_answer": "historical novels.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 2,
+      "num_total": 3
+    },
+    {
+      "example_idx": 14,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "hobby",
+      "names": [
+        "Tara",
+        "Eli",
+        "Quinn"
+      ],
+      "transcript": [
+        "I am Tara.",
+        "I am Eli.",
+        "My favorite hobby is painting.",
+        "I prefer cycling. Quinn is into baking, right?",
+        "Hi Tara, yes, baking is my favorite hobby.",
+        "Eli, didn't you used to prefer running?",
+        "I did, but cycling is still my top hobby now."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What hobby does Tara prefer? Answer: Tara prefers",
+          "groundtruth": "painting",
+          "model_answer": "cycling.",
+          "correct": false
+        },
+        {
+          "prompt": "What hobby does Eli prefer? Answer: Eli prefers",
+          "groundtruth": "cycling",
+          "model_answer": "cycling.",
+          "correct": true
+        },
+        {
+          "prompt": "What hobby does Quinn prefer? Answer: Quinn prefers",
+          "groundtruth": "baking",
+          "model_answer": "cycling.",
+          "correct": false
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 1,
+      "num_total": 3
+    },
+    {
+      "example_idx": 15,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "cuisine",
+      "names": [
+        "Ava",
+        "Mason",
+        "Olivia"
+      ],
+      "transcript": [
+        "I am Ava.",
+        "I am Mason.",
+        "My favorite cuisine is Thai.",
+        "I prefer Italian. I heard Olivia loves Mexican.",
+        "Hi Ava! Yes, I love Mexican food the most.",
+        "Mason, between pizza and pasta, which do you like more?",
+        "Pizza, but Italian overall is my favorite."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What cuisine does Ava prefer? Answer: Ava prefers",
+          "groundtruth": "Thai",
+          "model_answer": "Italian cuisine.",
+          "correct": false
+        },
+        {
+          "prompt": "What cuisine does Mason prefer? Answer: Mason prefers",
+          "groundtruth": "Italian",
+          "model_answer": "Italian.",
+          "correct": true
+        },
+        {
+          "prompt": "What cuisine does Olivia prefer? Answer: Olivia prefers",
+          "groundtruth": "Mexican",
+          "model_answer": "Italian.",
+          "correct": false
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 1,
+      "num_total": 3
+    },
+    {
+      "example_idx": 16,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "book genre",
+      "names": [
+        "Ethan",
+        "Sophia",
+        "Logan"
+      ],
+      "transcript": [
+        "I am Ethan.",
+        "I am Sophia.",
+        "I mostly read science fiction.",
+        "I like mystery more. Logan, didn't you say you prefer fantasy?",
+        "That's right, I prefer fantasy novels.",
+        "Ethan, which sci-fi author do you like most?",
+        "Asimov, but in genre terms it's sci-fi for me."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What book genre does Ethan prefer? Answer: Ethan prefers",
+          "groundtruth": "science fiction; sci-fi",
+          "model_answer": "science fiction.",
+          "correct": true
+        },
+        {
+          "prompt": "What book genre does Sophia prefer? Answer: Sophia prefers",
+          "groundtruth": "mystery",
+          "model_answer": "fantasy novels.",
+          "correct": false
+        },
+        {
+          "prompt": "What book genre does Logan prefer? Answer: Logan prefers",
+          "groundtruth": "fantasy",
+          "model_answer": "fantasy novels.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 2,
+      "num_total": 3
+    },
+    {
+      "example_idx": 17,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "beverage",
+      "names": [
+        "Chloe",
+        "James",
+        "Lucas"
+      ],
+      "transcript": [
+        "I am Chloe.",
+        "I am James.",
+        "I like iced coffee the most.",
+        "Tea is my pick. I heard Lucas always orders fresh orange juice.",
+        "Yes, that's me; orange juice is my favorite drink."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What beverage does Chloe prefer? Answer: Chloe prefers",
+          "groundtruth": "iced coffee",
+          "model_answer": "iced coffee.",
+          "correct": true
+        },
+        {
+          "prompt": "What beverage does James prefer? Answer: James prefers",
+          "groundtruth": "tea",
+          "model_answer": "tea.",
+          "correct": true
+        },
+        {
+          "prompt": "What beverage does Lucas prefer? Answer: Lucas prefers",
+          "groundtruth": "orange juice",
+          "model_answer": "fresh orange juice.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 3,
+      "num_total": 3
+    },
+    {
+      "example_idx": 18,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "travel type",
+      "names": [
+        "Nora",
+        "Henry",
+        "Zoe"
+      ],
+      "transcript": [
+        "I am Nora.",
+        "I am Henry.",
+        "I prefer mountain retreats.",
+        "I like city breaks. Zoe, you're into beaches, right?",
+        "Right, beaches are my favorite. Hi Henry!",
+        "Nora, would you ever swap mountains for a beach trip?",
+        "Sometimes, but mountains are still my top choice."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What type of travel does Nora prefer? Answer: Nora prefers",
+          "groundtruth": "mountain",
+          "model_answer": "mountain retreats.",
+          "correct": true
+        },
+        {
+          "prompt": "What type of travel does Henry prefer? Answer: Henry prefers",
+          "groundtruth": "city",
+          "model_answer": "mountain retreats.",
+          "correct": false
+        },
+        {
+          "prompt": "What type of travel does Zoe prefer? Answer: Zoe prefers",
+          "groundtruth": "beach",
+          "model_answer": "beaches.",
+          "correct": true
+        }
+      ],
+      "all_correct": false,
+      "num_correct": 2,
+      "num_total": 3
+    },
+    {
+      "example_idx": 19,
+      "level": "2.5",
+      "transcript_type": "unlabeled",
+      "topic": "musical instrument",
+      "names": [
+        "Ryan",
+        "Mia",
+        "Caleb"
+      ],
+      "transcript": [
+        "I am Ryan.",
+        "I am Mia.",
+        "I like playing the guitar.",
+        "I prefer the piano. Caleb told me he loves drums.",
+        "Yes, drums are my favorite to play. Hi Mia!",
+        "Ryan, between acoustic and electric, which guitar do you prefer?",
+        "Electric, but guitar is my favorite instrument."
+      ],
+      "qa_results": [
+        {
+          "prompt": "What musical instrument does Ryan prefer? Answer: Ryan prefers",
+          "groundtruth": "guitar",
+          "model_answer": "the guitar.",
+          "correct": true
+        },
+        {
+          "prompt": "What musical instrument does Mia prefer? Answer: Mia prefers",
+          "groundtruth": "piano",
+          "model_answer": "the piano.",
+          "correct": true
+        },
+        {
+          "prompt": "What musical instrument does Caleb prefer? Answer: Caleb prefers",
+          "groundtruth": "drums",
+          "model_answer": "the drums.",
+          "correct": true
+        }
+      ],
+      "all_correct": true,
+      "num_correct": 3,
+      "num_total": 3
+    }
+  ]
+}
