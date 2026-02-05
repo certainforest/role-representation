@@ -232,13 +232,14 @@ class SpeakerClusteringAnalyzer:
                 self.plot_3d_clusters(results, str(plot_3d_path))
 
             # Save metrics (without components to reduce size)
+            # Convert numpy types to Python types for JSON serialization
             metrics = {
-                'layer': results['layer'],
+                'layer': int(results['layer']),
                 'explained_variance': results['explained_variance'],
                 'total_variance': results['total_variance'],
                 'silhouette_score': results['silhouette_score'],
                 'davies_bouldin_score': results['davies_bouldin_score'],
-                'n_samples': results['n_samples'],
+                'n_samples': int(results['n_samples']),
                 'speakers': results['speakers']
             }
             all_results.append(metrics)

@@ -1,0 +1,103 @@
+{
+  "transcript_id": "1",
+  "condition": "unlabeled",
+  "model": "gpt2",
+  "layers": [
+    {
+      "layer": 0,
+      "explained_variance": [
+        0.2648518681526184,
+        0.1890682876110077,
+        0.06303978711366653
+      ],
+      "total_variance": 0.5169599652290344,
+      "silhouette_score": 0.12488532066345215,
+      "davies_bouldin_score": 1.905574670828869,
+      "n_samples": 507,
+      "speakers": [
+        "Derek Knapick",
+        "Jasmine C."
+      ]
+    },
+    {
+      "layer": 2,
+      "explained_variance": [
+        0.3364468812942505,
+        0.12686067819595337,
+        0.08558867126703262
+      ],
+      "total_variance": 0.5488962531089783,
+      "silhouette_score": 0.14580769836902618,
+      "davies_bouldin_score": 2.5934471812752564,
+      "n_samples": 507,
+      "speakers": [
+        "Derek Knapick",
+        "Jasmine C."
+      ]
+    },
+    {
+      "layer": 4,
+      "explained_variance": [
+        0.866995632648468,
+        0.015758400782942772,
+        0.010927816852927208
+      ],
+      "total_variance": 0.8936818242073059,
+      "silhouette_score": 0.23784683644771576,
+      "davies_bouldin_score": 2.9372219338887278,
+      "n_samples": 507,
+      "speakers": [
+        "Derek Knapick",
+        "Jasmine C."
+      ]
+    },
+    {
+      "layer": 6,
+      "explained_variance": [
+        0.8376272320747375,
+        0.01309079211205244,
+        0.010391156189143658
+      ],
+      "total_variance": 0.86110919713974,
+      "silhouette_score": 0.23672634363174438,
+      "davies_bouldin_score": 2.8134815630875036,
+      "n_samples": 507,
+      "speakers": [
+        "Derek Knapick",
+        "Jasmine C."
+      ]
+    },
+    {
+      "layer": 8,
+      "explained_variance": [
+        0.7659614682197571,
+        0.014372402802109718,
+        0.012743841856718063
+      ],
+      "total_variance": 0.7930777072906494,
+      "silhouette_score": 0.2287197858095169,
+      "davies_bouldin_score": 2.629231206750943,
+      "n_samples": 507,
+      "speakers": [
+        "Derek Knapick",
+        "Jasmine C."
+      ]
+    },
+    {
+      "layer": 10,
+      "explained_variance": [
+        0.6253669857978821,
+        0.02265089564025402,
+        0.017034973949193954
+      ],
+      "total_variance": 0.6650528311729431,
+      "silhouette_score": 0.19865645468235016,
+      "davies_bouldin_score": 2.5890340889176557,
+      "n_samples": 507,
+      "speakers": [
+        "Derek Knapick",
+        "Jasmine C."
+      ]
+    }
+  ]
+}

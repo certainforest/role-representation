@@ -100,6 +100,18 @@ class ActivationCollector:
         self.model_name = model_name
         self.model = LanguageModel(model_name, device_map="auto")
 
+        # Detect model architecture
+        if hasattr(self.model, 'transformer') and hasattr(self.model.transformer, 'h'):
+            # GPT-2 style architecture
+            self.layer_accessor = lambda idx: self.model.transformer.h[idx].output[0]
+            self.model_type = 'gpt2'
+        elif hasattr(self.model, 'model') and hasattr(self.model.model, 'layers'):
+            # Llama style architecture
+            self.layer_accessor = lambda idx: self.model.model.layers[idx].output[0]
+            self.model_type = 'llama'
+        else:
+            raise ValueError(f"Unknown model architecture for {model_name}")
+
         # Determine layers to collect
         if layers is None:
             num_layers = self.model.config.num_hidden_layers
@@ -109,6 +121,7 @@ class ActivationCollector:
 
         print(f"ActivationCollector initialized:")
         print(f"  Model: {model_name}")
+        print(f"  Model type: {self.model_type}")
         print(f"  Layers: {self.layers}")
         print(f"  Total layers: {self.model.config.num_hidden_layers}")
 
@@ -148,8 +161,8 @@ class ActivationCollector:
         with self.model.trace(prompt, remote=remote, scan=scan) as tracer:
             saved_acts = {}
             for layer_idx in self.layers:
-                # Access hidden states for this layer
-                hidden = self.model.model.layers[layer_idx].output[0]
+                # Access hidden states for this layer (architecture-specific)
+                hidden = self.layer_accessor(layer_idx)
                 saved_acts[layer_idx] = hidden.save()
 
         # Extract values from saved tensors

@@ -1,0 +1,15 @@
+{
+  "transcript_id": "1",
+  "model": "gpt2",
+  "corruption_rate": 0.3,
+  "seed": 42,
+  "num_tokens": 5559,
+  "num_speakers": 2,
+  "num_turns": 37,
+  "files": {
+    "labeled": "labs/benchmark/conditions/1/labeled.txt",
+    "unlabeled": "labs/benchmark/conditions/1/unlabeled.txt",
+    "corrupted": "labs/benchmark/conditions/1/corrupted.txt",
+    "metadata": "labs/benchmark/conditions/1/token_mapping.json"
+  }
+}

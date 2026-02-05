@@ -1,0 +1,68 @@
+{
+  "transcript_id": "1",
+  "condition": "unlabeled",
+  "model": "gpt2",
+  "num_roles": 2,
+  "speakers": [
+    "Derek Knapick",
+    "Jasmine C."
+  ],
+  "train_samples": 406,
+  "test_samples": 101,
+  "layers": [
+    {
+      "layer": 0,
+      "best_test_acc": 0.7623762488365173,
+      "best_epoch": 0,
+      "random_baseline": 0.5,
+      "improvement": 0.26237624883651733,
+      "final_train_acc": 0.7980295566502463,
+      "final_test_acc": 0.7425742745399475
+    },
+    {
+      "layer": 2,
+      "best_test_acc": 0.7722772359848022,
+      "best_epoch": 0,
+      "random_baseline": 0.5,
+      "improvement": 0.27227723598480225,
+      "final_train_acc": 0.8940886699507389,
+      "final_test_acc": 0.6435643434524536
+    },
+    {
+      "layer": 4,
+      "best_test_acc": 0.7821782231330872,
+      "best_epoch": 2,
+      "random_baseline": 0.5,
+      "improvement": 0.28217822313308716,
+      "final_train_acc": 0.9778325123152709,
+      "final_test_acc": 0.6534653306007385
+    },
+    {
+      "layer": 6,
+      "best_test_acc": 0.6930692791938782,
+      "best_epoch": 15,
+      "random_baseline": 0.5,
+      "improvement": 0.19306927919387817,
+      "final_train_acc": 0.9975369458128078,
+      "final_test_acc": 0.6138613820075989
+    },
+    {
+      "layer": 8,
+      "best_test_acc": 0.7425742745399475,
+      "best_epoch": 1,
+      "random_baseline": 0.5,
+      "improvement": 0.2425742745399475,
+      "final_train_acc": 1.0,
+      "final_test_acc": 0.5841584205627441
+    },
+    {
+      "layer": 10,
+      "best_test_acc": 0.7029703259468079,
+      "best_epoch": 9,
+      "random_baseline": 0.5,
+      "improvement": 0.20297032594680786,
+      "final_train_acc": 1.0,
+      "final_test_acc": 0.603960394859314
+    }
+  ]
+}
