@@ -2,154 +2,181 @@ import random
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from itertools import permutations
 
 random.seed(12)
 torch.manual_seed(12)
 torch.cuda.manual_seed(12)
 
 def rindex(lst, value):
-    """get the rightmost index of a value in a list."""
     return len(lst) - 1 - lst[::-1].index(value)
 
-# load model
+def find_first_diff(list1, list2):
+    """Find the first index where two lists differ."""
+    for i, (a, b) in enumerate(zip(list1, list2)):
+        if a != b:
+            return i
+    return min(len(list1), len(list2))
+
+# Load model
 import nnsight
 model = nnsight.LanguageModel("meta-llama/Llama-3.1-8B", device_map="auto")
 
-PROMPT_TEMPLATE = """This is the transcript of a conversation.
+# Prompts: Different conversations, SAME question
+PROMPT_SOURCE = """This is the transcript of a conversation.
 "I am Alice."
 "I am Bob."
 "I like basketball."
 "I heard that Claire likes basketball too!"
 "Hi Alice! Yes, I like basketball. But I like tennis more!"
-"Fun! What do you like?"
+"Fun! What do you like, Bob?"
 "I like soccer."
-Question: {question} Answer:"""
+Question: Who likes tennis? Answer:"""  # Claire
 
-# Define all prompts with their expected answers
-prompts = {
-    "Alice": PROMPT_TEMPLATE.format(question="Who likes basketball?"),
-    "Bob": PROMPT_TEMPLATE.format(question="Who likes soccer?"),
-    "Claire": PROMPT_TEMPLATE.format(question="Who likes tennis?"),
-}
+PROMPT_BASE = """This is the transcript of a conversation.
+"I am Alice."
+"I am Bob."
+"I like basketball."
+"I heard that Claire likes basketball too!"
+"Hi Alice! Yes, I like basketball. But I like soccer more!"
+"Fun! What do you like, Bob?"
+"I like tennis."
+Question: Who likes tennis? Answer:"""  # Bob
 
 # Token IDs
 token_ids = {
-    "Alice": model.tokenizer(" Alice").input_ids[1],
-    "Bob": model.tokenizer(" Bob").input_ids[1],
     "Claire": model.tokenizer(" Claire").input_ids[1],
+    "Bob": model.tokenizer(" Bob").input_ids[1],
 }
+print(f"Token IDs: {token_ids}")
 
-print("Expected token IDs:", token_ids)
+# Parse tokens
+source_prompt_ids = model.tokenizer(PROMPT_SOURCE).input_ids
+base_prompt_ids = model.tokenizer(PROMPT_BASE).input_ids
 
-# Verify model produces correct answers and get activations
-all_activations = {}
-for name, prompt in prompts.items():
-    activations = []
-    with torch.no_grad():
-        with model.trace(prompt):
-            for layer in model.model.layers:
-                activations.append(layer.output[0].save())
-            logits = model.output.logits.save()
-    
-    predicted_token_id = logits.argmax(dim=-1)[0, -1].item()
-    predicted_token = model.tokenizer.decode(predicted_token_id)
-    expected_token_id = token_ids[name]
-    
-    print(f"{name}: predicted={predicted_token!r} (id={predicted_token_id}), expected id={expected_token_id}")
-    
-    # Assert model produces correct answer
-    assert predicted_token_id == expected_token_id, \
-        f"Model prediction mismatch for {name}! " \
-        f"Expected token id {expected_token_id} (' {name}'), " \
-        f"but got {predicted_token_id} ({predicted_token!r})"
-    
-    all_activations[name] = activations
+assert len(source_prompt_ids) == len(base_prompt_ids), \
+    f"Prompt lengths differ: {len(source_prompt_ids)} vs {len(base_prompt_ids)}"
 
-print("\n✓ All model predictions match expected answers. Proceeding with patching.\n")
-for name, prompt in prompts.items():
-    with torch.no_grad():
-        with model.trace(prompt):
-            logits = model.output.logits.save()
-    probs = logits[0, -1].softmax(dim=-1)
-    print(f"\n{name} prompt:")
-    for n, tid in token_ids.items():
-        print(f"  P({n}) = {probs[tid].item():.4f}")
+# Find first differing position
+first_diff_index = find_first_diff(source_prompt_ids, base_prompt_ids)
+print(f"\nFirst differing token at index {first_diff_index}:")
+print(f"  Source: {model.tokenizer.decode(source_prompt_ids[first_diff_index])!r}")
+print(f"  Base:   {model.tokenizer.decode(base_prompt_ids[first_diff_index])!r}")
 
-# Check activation shape
-is_2d = len(all_activations["Alice"][0].shape) == 2
-print(f"Activation shape: {all_activations['Alice'][0].shape}, is_2d: {is_2d}")
+# Print all tokens with diff markers
+print("\n" + "=" * 60)
+print("TOKENS (*** = differs):")
+print("=" * 60)
+for i, (s_id, b_id) in enumerate(zip(source_prompt_ids, base_prompt_ids)):
+    s_tok = model.tokenizer.decode(s_id)
+    b_tok = model.tokenizer.decode(b_id)
+    marker = " ***" if s_id != b_id else ""
+    if s_id == b_id:
+        print(f"{i:3d}: {s_tok!r}{marker}")
+    else:
+        print(f"{i:3d}: {s_tok!r} vs {b_tok!r}{marker}")
 
-# Get token indices for patching
-source_prompt_ids = model.tokenizer(prompts["Alice"]).input_ids
-question_token_id = model.tokenizer('Question').input_ids[1]
-last_example_index = rindex(source_prompt_ids, question_token_id)
+# Get source activations and logits
+print("\n" + "=" * 60)
+print("Getting activations...")
+print("=" * 60)
 
-print("last_example_index:", last_example_index)
+source_activations = []
+with torch.no_grad():
+    with model.trace(PROMPT_SOURCE) as tracer:
+        for layer in model.model.layers:
+            source_activations.append(layer.output[0].save())
+        source_logits = model.output.logits.save()
 
+source_pred_id = source_logits.argmax(dim=-1)[0, -1].item()
+source_pred = model.tokenizer.decode(source_pred_id)
+print(f"Source (Claire=tennis): {source_pred!r}")
+
+base_activations = []
+with torch.no_grad():
+    with model.trace(PROMPT_BASE) as tracer:
+        for layer in model.model.layers:
+            base_activations.append(layer.output[0].save())
+        base_logits = model.output.logits.save()
+
+base_pred_id = base_logits.argmax(dim=-1)[0, -1].item()
+base_pred = model.tokenizer.decode(base_pred_id)
+print(f"Base (Bob=tennis):     {base_pred!r}")
+
+# Confidence breakdown
+print("\n" + "=" * 60)
+print("Confidence:")
+print("=" * 60)
+source_probs = source_logits[0, -1].softmax(dim=-1)
+base_probs = base_logits[0, -1].softmax(dim=-1)
+
+print(f"Source: P(Claire)={source_probs[token_ids['Claire']].item():.4f}, P(Bob)={source_probs[token_ids['Bob']].item():.4f}")
+print(f"Base:   P(Claire)={base_probs[token_ids['Claire']].item():.4f}, P(Bob)={base_probs[token_ids['Bob']].item():.4f}")
+
+# Check tracking behavior
+print("\n" + "=" * 60)
+if source_pred_id == token_ids["Claire"] and base_pred_id == token_ids["Bob"]:
+    print("✓ Model correctly tracks conversation!")
+elif source_pred_id == token_ids["Claire"] and base_pred_id == token_ids["Claire"]:
+    print("✗ Model uses SHORTCUT: Always says Claire")
+else:
+    print(f"? Unexpected: source={source_pred}, base={base_pred}")
+print("=" * 60)
+
+# Check shape
+is_2d = len(source_activations[0].shape) == 2
+print(f"\nActivation shape: {source_activations[0].shape}, is_2d: {is_2d}")
+
+# Patching
 from tqdm import trange
 
-# Pairwise patching: source -> base for all pairs
-pairs = list(permutations(prompts.keys(), 2))
-print(f"Pairs to patch: {pairs}")
+claire_token_id = token_ids["Claire"]
+bob_token_id = token_ids["Bob"]
 
-all_results = {}
+patching_results = []
+for layer_index in trange(model.config.num_hidden_layers, desc="Patching"):
+    patching_per_layer = []
+    for token_index in range(first_diff_index,len(source_prompt_ids)):
+        with torch.no_grad():
+            with model.trace(PROMPT_BASE) as tracer:
+                if is_2d:
+                    model.model.layers[layer_index].output[0][token_index, :] = source_activations[layer_index][token_index, :]
+                else:
+                    model.model.layers[layer_index].output[0][0, token_index, :] = source_activations[layer_index][0, token_index, :]
+                patched_logits = model.output.logits.save()
+            
+            patched_probs = patched_logits[:, -1].softmax(dim=-1)
+            claire_prob = patched_probs[0, claire_token_id].item()
+            bob_prob = patched_probs[0, bob_token_id].item()
+            patching_per_layer.append(claire_prob - bob_prob)
+    
+    patching_results.append(patching_per_layer)
 
-for source_name, base_name in pairs:
-    source_activations = all_activations[source_name]
-    base_prompt = prompts[base_name]
-    source_token_id = token_ids[source_name]
-    base_token_id = token_ids[base_name]
-    
-    patching_results = []
-    
-    for layer_index in trange(model.config.num_hidden_layers, desc=f"{source_name}→{base_name}"):
-        patching_per_layer = []
-        for token_index in range(last_example_index, len(source_prompt_ids)):
-            with torch.no_grad():
-                with model.trace(base_prompt):
-                    if is_2d:
-                        model.model.layers[layer_index].output[0][token_index, :] = source_activations[layer_index][token_index, :]
-                    else:
-                        model.model.layers[layer_index].output[0][0, token_index, :] = source_activations[layer_index][0, token_index, :]
-                    
-                    patched_logits = model.output.logits.save()
-                
-                patched_probs = patched_logits[:, -1].softmax(dim=-1)
-                source_prob = patched_probs[0, source_token_id].item()
-                base_prob = patched_probs[0, base_token_id].item()
-                patched_diff = source_prob - base_prob
-                patching_per_layer.append(patched_diff)
-        
-        patching_results.append(patching_per_layer)
-    
-    all_results[(source_name, base_name)] = np.array(patching_results, dtype=float)
-
-# Plot all pairs in a grid
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-axes = axes.flatten()
+patching_results = np.array(patching_results, dtype=float)
+print(f"Patching results shape: {patching_results.shape}")
 
 # Token strings for x-axis
-base_token_ids = model.tokenizer(prompts["Alice"]).input_ids
-token_strings = [
-    model.tokenizer.decode(base_token_ids[t])
-    for t in range(last_example_index, len(base_token_ids))
-]
+token_strings = [model.tokenizer.decode(tok_id) for tok_id in base_prompt_ids][first_diff_index:]
 
-for idx, ((source_name, base_name), results) in enumerate(all_results.items()):
-    ax = axes[idx]
-    im = ax.imshow(results, aspect='auto', cmap='RdBu_r', origin='lower', 
-                   vmin=-1, vmax=1)
-    ax.set_title(f'{source_name} → {base_name}\nP({source_name}) - P({base_name})')
-    ax.set_xticks(range(len(token_strings)))
-    ax.set_xticklabels(token_strings, rotation=45, ha='right', fontsize=8)
-    ax.set_ylabel('Layers')
-    ax.set_xlabel('Tokens')
+# Find question position
+question_token_id = model.tokenizer('Question').input_ids[1]
+question_pos = rindex(base_prompt_ids[first_diff_index:], question_token_id) + first_diff_index
+# Plot
+plt.figure(figsize=(10, 8))
+plt.imshow(patching_results, aspect='auto', cmap='RdBu_r', origin='lower', vmin=-0.5, vmax=0.5)
+plt.colorbar(label='P(Claire) - P(Bob)')
 
-plt.colorbar(im, ax=axes, label='Probability Difference', shrink=0.8)
-plt.suptitle('Pairwise Activation Patching', fontsize=14)
+# Mark first diff and question boundary
+plt.axvline(x=question_pos - first_diff_index - 0.5, color='green', linestyle='--', linewidth=2, label='Question starts')
+
+plt.xticks(ticks=range(len(token_strings)), labels=token_strings, rotation=90, ha='center', fontsize=6)
+plt.yticks(ticks=range(0, patching_results.shape[0], 2), labels=range(0, patching_results.shape[0], 2))
+plt.xlabel('Tokens')
+plt.ylabel('Layers')
+plt.title('Activation Patching: Source (Claire=tennis) → Base (Bob=tennis)\nOrange = first diff | Green = question | Red = more Claire, Blue = more Bob')
+plt.legend(loc='upper left')
+
 plt.tight_layout()
-plt.savefig("activation_patching_pairwise.png", dpi=150)
+plt.savefig("activation_patching_binding_tennis.png", dpi=150)
 plt.close()
 
-print("Done!")
+print("\nSaved: activation_patching_binding_tennis.png")
