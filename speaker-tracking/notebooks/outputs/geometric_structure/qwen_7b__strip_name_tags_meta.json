@@ -1,0 +1,33 @@
+{
+  "model_key": "qwen_7b",
+  "model_name": "Qwen/Qwen2-7B-Instruct",
+  "variant_key": "strip_name_tags",
+  "variant_notes": "Remove 'Alice:'/'Bob:' prefixes; keep labels from original turns.",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      450
+    ],
+    "speaker_tag": [],
+    "verb": [
+      48,
+      50,
+      71,
+      103,
+      141,
+      170,
+      200,
+      219,
+      241,
+      337,
+      349,
+      433
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "mask_verbs",
+  "variant_notes": "Mask verb-like words with <VERB>.",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      542
+    ],
+    "speaker_tag": [],
+    "verb": []
+  }
+}

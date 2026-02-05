@@ -1,0 +1,33 @@
+{
+  "model_key": "qwen_7b",
+  "model_name": "Qwen/Qwen2-7B-Instruct",
+  "variant_key": "turn_shuffle_within_speaker",
+  "variant_notes": "Permute each speaker's utterances across their own turns (keeps speaker alternation pattern).",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      450
+    ],
+    "speaker_tag": [],
+    "verb": [
+      4,
+      41,
+      54,
+      139,
+      174,
+      187,
+      223,
+      315,
+      329,
+      363,
+      403,
+      405
+    ]
+  }
+}

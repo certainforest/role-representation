@@ -1,0 +1,31 @@
+{
+  "model_key": "qwen_2_5",
+  "model_name": "Qwen/Qwen2.5-7B-Instruct",
+  "variant_key": "only_function_words",
+  "variant_notes": "Keep only function words (stopword-style list).",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      150
+    ],
+    "speaker_tag": [],
+    "verb": [
+      13,
+      21,
+      33,
+      46,
+      54,
+      61,
+      69,
+      75,
+      108,
+      135
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "turn_shuffle_within_speaker",
+  "variant_notes": "Permute each speaker's utterances across their own turns (keeps speaker alternation pattern).",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      443
+    ],
+    "speaker_tag": [],
+    "verb": [
+      4,
+      40,
+      53,
+      137,
+      172,
+      185,
+      221,
+      313,
+      327,
+      360,
+      397,
+      399
+    ]
+  }
+}

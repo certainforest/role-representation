@@ -1,0 +1,33 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "only_verbs",
+  "variant_notes": "Keep only verbs (heuristic); replace empty with <NO_VERBS>.",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      114
+    ],
+    "speaker_tag": [],
+    "verb": [
+      8,
+      10,
+      16,
+      21,
+      26,
+      31,
+      39,
+      42,
+      50,
+      73,
+      76,
+      102
+    ]
+  }
+}

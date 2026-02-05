@@ -1,0 +1,27 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "replace_verbs_random",
+  "variant_notes": "Replace verb-like words with random verbs matched by character length.",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      441
+    ],
+    "speaker_tag": [],
+    "verb": [
+      99,
+      207,
+      235,
+      343,
+      360,
+      369
+    ]
+  }
+}

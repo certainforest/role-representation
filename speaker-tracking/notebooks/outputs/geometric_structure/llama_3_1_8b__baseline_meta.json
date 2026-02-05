@@ -1,0 +1,66 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "baseline",
+  "variant_notes": "Original text with explicit speaker tags.",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      506
+    ],
+    "speaker_tag": [
+      0,
+      19,
+      37,
+      59,
+      75,
+      92,
+      108,
+      130,
+      149,
+      165,
+      182,
+      197,
+      213,
+      232,
+      247,
+      264,
+      280,
+      297,
+      313,
+      328,
+      342,
+      355,
+      371,
+      389,
+      402,
+      419,
+      438,
+      453,
+      465,
+      480,
+      494,
+      501
+    ],
+    "verb": [
+      51,
+      53,
+      78,
+      114,
+      155,
+      187,
+      221,
+      242,
+      268,
+      378,
+      392,
+      485
+    ]
+  }
+}

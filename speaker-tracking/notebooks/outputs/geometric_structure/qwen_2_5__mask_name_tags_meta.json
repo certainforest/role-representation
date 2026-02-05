@@ -1,0 +1,33 @@
+{
+  "model_key": "qwen_2_5",
+  "model_name": "Qwen/Qwen2.5-7B-Instruct",
+  "variant_key": "mask_name_tags",
+  "variant_notes": "Replace speaker tag with constant 'Speaker:' prefix.",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      513
+    ],
+    "speaker_tag": [],
+    "verb": [
+      54,
+      56,
+      81,
+      117,
+      159,
+      192,
+      226,
+      247,
+      273,
+      383,
+      397,
+      492
+    ]
+  }
+}

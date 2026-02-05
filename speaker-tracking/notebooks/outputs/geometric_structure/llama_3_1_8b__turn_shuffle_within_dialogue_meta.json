@@ -1,0 +1,33 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "turn_shuffle_within_dialogue",
+  "variant_notes": "Shuffle turn order within the dialogue (turn text and label permuted together).",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      443
+    ],
+    "speaker_tag": [],
+    "verb": [
+      22,
+      48,
+      77,
+      144,
+      146,
+      156,
+      173,
+      302,
+      331,
+      360,
+      410,
+      440
+    ]
+  }
+}

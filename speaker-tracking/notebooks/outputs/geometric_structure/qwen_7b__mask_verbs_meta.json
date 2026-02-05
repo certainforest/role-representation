@@ -1,0 +1,20 @@
+{
+  "model_key": "qwen_7b",
+  "model_name": "Qwen/Qwen2-7B-Instruct",
+  "variant_key": "mask_verbs",
+  "variant_notes": "Mask verb-like words with <VERB>.",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      549
+    ],
+    "speaker_tag": [],
+    "verb": []
+  }
+}

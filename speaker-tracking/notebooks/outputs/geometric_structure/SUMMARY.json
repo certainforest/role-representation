@@ -1,17 +1,158 @@
 {
   "qwen_7b": {
-    "npz": "outputs/geometric_structure/qwen_7b_layerpos_data.npz",
-    "meta": "outputs/geometric_structure/qwen_7b_meta.json",
-    "num_layerpos": 10
+    "baseline": {
+      "npz": "outputs/geometric_structure/qwen_7b__baseline_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__baseline_meta.json",
+      "num_layerpos": 10
+    },
+    "strip_name_tags": {
+      "npz": "outputs/geometric_structure/qwen_7b__strip_name_tags_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__strip_name_tags_meta.json",
+      "num_layerpos": 5
+    },
+    "mask_name_tags": {
+      "npz": "outputs/geometric_structure/qwen_7b__mask_name_tags_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__mask_name_tags_meta.json",
+      "num_layerpos": 5
+    },
+    "speaker_label_shuffle": {
+      "npz": "outputs/geometric_structure/qwen_7b__speaker_label_shuffle_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__speaker_label_shuffle_meta.json",
+      "num_layerpos": 5
+    },
+    "turn_shuffle_within_dialogue": {
+      "npz": "outputs/geometric_structure/qwen_7b__turn_shuffle_within_dialogue_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__turn_shuffle_within_dialogue_meta.json",
+      "num_layerpos": 5
+    },
+    "turn_shuffle_within_speaker": {
+      "npz": "outputs/geometric_structure/qwen_7b__turn_shuffle_within_speaker_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__turn_shuffle_within_speaker_meta.json",
+      "num_layerpos": 5
+    },
+    "mask_verbs": {
+      "npz": "outputs/geometric_structure/qwen_7b__mask_verbs_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__mask_verbs_meta.json",
+      "num_layerpos": 0
+    },
+    "only_verbs": {
+      "npz": "outputs/geometric_structure/qwen_7b__only_verbs_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__only_verbs_meta.json",
+      "num_layerpos": 5
+    },
+    "only_function_words": {
+      "npz": "outputs/geometric_structure/qwen_7b__only_function_words_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__only_function_words_meta.json",
+      "num_layerpos": 5
+    },
+    "replace_verbs_random": {
+      "npz": "outputs/geometric_structure/qwen_7b__replace_verbs_random_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_7b__replace_verbs_random_meta.json",
+      "num_layerpos": 5
+    }
   },
   "qwen_2_5": {
-    "npz": "outputs/geometric_structure/qwen_2_5_layerpos_data.npz",
-    "meta": "outputs/geometric_structure/qwen_2_5_meta.json",
-    "num_layerpos": 10
+    "baseline": {
+      "npz": "outputs/geometric_structure/qwen_2_5__baseline_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__baseline_meta.json",
+      "num_layerpos": 10
+    },
+    "strip_name_tags": {
+      "npz": "outputs/geometric_structure/qwen_2_5__strip_name_tags_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__strip_name_tags_meta.json",
+      "num_layerpos": 5
+    },
+    "mask_name_tags": {
+      "npz": "outputs/geometric_structure/qwen_2_5__mask_name_tags_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__mask_name_tags_meta.json",
+      "num_layerpos": 5
+    },
+    "speaker_label_shuffle": {
+      "npz": "outputs/geometric_structure/qwen_2_5__speaker_label_shuffle_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__speaker_label_shuffle_meta.json",
+      "num_layerpos": 5
+    },
+    "turn_shuffle_within_dialogue": {
+      "npz": "outputs/geometric_structure/qwen_2_5__turn_shuffle_within_dialogue_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__turn_shuffle_within_dialogue_meta.json",
+      "num_layerpos": 5
+    },
+    "turn_shuffle_within_speaker": {
+      "npz": "outputs/geometric_structure/qwen_2_5__turn_shuffle_within_speaker_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__turn_shuffle_within_speaker_meta.json",
+      "num_layerpos": 5
+    },
+    "mask_verbs": {
+      "npz": "outputs/geometric_structure/qwen_2_5__mask_verbs_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__mask_verbs_meta.json",
+      "num_layerpos": 0
+    },
+    "only_verbs": {
+      "npz": "outputs/geometric_structure/qwen_2_5__only_verbs_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__only_verbs_meta.json",
+      "num_layerpos": 5
+    },
+    "only_function_words": {
+      "npz": "outputs/geometric_structure/qwen_2_5__only_function_words_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__only_function_words_meta.json",
+      "num_layerpos": 5
+    },
+    "replace_verbs_random": {
+      "npz": "outputs/geometric_structure/qwen_2_5__replace_verbs_random_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/qwen_2_5__replace_verbs_random_meta.json",
+      "num_layerpos": 5
+    }
   },
   "llama_3_1_8b": {
-    "npz": "outputs/geometric_structure/llama_3_1_8b_layerpos_data.npz",
-    "meta": "outputs/geometric_structure/llama_3_1_8b_meta.json",
-    "num_layerpos": 10
+    "baseline": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__baseline_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__baseline_meta.json",
+      "num_layerpos": 10
+    },
+    "strip_name_tags": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__strip_name_tags_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__strip_name_tags_meta.json",
+      "num_layerpos": 5
+    },
+    "mask_name_tags": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__mask_name_tags_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__mask_name_tags_meta.json",
+      "num_layerpos": 5
+    },
+    "speaker_label_shuffle": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__speaker_label_shuffle_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__speaker_label_shuffle_meta.json",
+      "num_layerpos": 5
+    },
+    "turn_shuffle_within_dialogue": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__turn_shuffle_within_dialogue_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__turn_shuffle_within_dialogue_meta.json",
+      "num_layerpos": 5
+    },
+    "turn_shuffle_within_speaker": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__turn_shuffle_within_speaker_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__turn_shuffle_within_speaker_meta.json",
+      "num_layerpos": 5
+    },
+    "mask_verbs": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__mask_verbs_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__mask_verbs_meta.json",
+      "num_layerpos": 0
+    },
+    "only_verbs": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__only_verbs_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__only_verbs_meta.json",
+      "num_layerpos": 5
+    },
+    "only_function_words": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__only_function_words_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__only_function_words_meta.json",
+      "num_layerpos": 5
+    },
+    "replace_verbs_random": {
+      "npz": "outputs/geometric_structure/llama_3_1_8b__replace_verbs_random_layerpos_data.npz",
+      "meta": "outputs/geometric_structure/llama_3_1_8b__replace_verbs_random_meta.json",
+      "num_layerpos": 5
+    }
   }
 }

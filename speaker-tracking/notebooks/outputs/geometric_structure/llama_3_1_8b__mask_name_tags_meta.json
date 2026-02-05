@@ -1,0 +1,33 @@
+{
+  "model_key": "llama_3_1_8b",
+  "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+  "variant_key": "mask_name_tags",
+  "variant_notes": "Replace speaker tag with constant 'Speaker:' prefix.",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "positions": {
+    "final": [
+      506
+    ],
+    "speaker_tag": [],
+    "verb": [
+      51,
+      53,
+      78,
+      114,
+      155,
+      187,
+      221,
+      242,
+      268,
+      378,
+      392,
+      485
+    ]
+  }
+}

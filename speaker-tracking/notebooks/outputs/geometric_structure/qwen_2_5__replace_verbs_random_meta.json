@@ -1,0 +1,27 @@
+{
+  "model_key": "qwen_2_5",
+  "model_name": "Qwen/Qwen2.5-7B-Instruct",
+  "variant_key": "replace_verbs_random",
+  "variant_notes": "Replace verb-like words with random verbs matched by character length.",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      448
+    ],
+    "speaker_tag": [],
+    "verb": [
+      102,
+      212,
+      240,
+      348,
+      365,
+      374
+    ]
+  }
+}

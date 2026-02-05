@@ -1,0 +1,33 @@
+{
+  "model_key": "qwen_2_5",
+  "model_name": "Qwen/Qwen2.5-7B-Instruct",
+  "variant_key": "speaker_label_shuffle",
+  "variant_notes": "Permute speaker labels across turns; text unchanged.",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      450
+    ],
+    "speaker_tag": [],
+    "verb": [
+      48,
+      50,
+      71,
+      103,
+      141,
+      170,
+      200,
+      219,
+      241,
+      337,
+      349,
+      433
+    ]
+  }
+}

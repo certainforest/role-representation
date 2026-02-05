@@ -1,0 +1,33 @@
+{
+  "model_key": "qwen_2_5",
+  "model_name": "Qwen/Qwen2.5-7B-Instruct",
+  "variant_key": "turn_shuffle_within_dialogue",
+  "variant_notes": "Shuffle turn order within the dialogue (turn text and label permuted together).",
+  "layers": [
+    0,
+    7,
+    14,
+    21,
+    28
+  ],
+  "positions": {
+    "final": [
+      450
+    ],
+    "speaker_tag": [],
+    "verb": [
+      22,
+      48,
+      77,
+      147,
+      149,
+      159,
+      177,
+      308,
+      337,
+      367,
+      417,
+      447
+    ]
+  }
+}
