@@ -1,0 +1,17 @@
+{
+  "qwen_7b": {
+    "npz": "outputs/geometric_structure/qwen_7b_layerpos_data.npz",
+    "meta": "outputs/geometric_structure/qwen_7b_meta.json",
+    "num_layerpos": 10
+  },
+  "qwen_2_5": {
+    "npz": "outputs/geometric_structure/qwen_2_5_layerpos_data.npz",
+    "meta": "outputs/geometric_structure/qwen_2_5_meta.json",
+    "num_layerpos": 10
+  },
+  "llama_3_1_8b": {
+    "npz": "outputs/geometric_structure/llama_3_1_8b_layerpos_data.npz",
+    "meta": "outputs/geometric_structure/llama_3_1_8b_meta.json",
+    "num_layerpos": 10
+  }
+}
