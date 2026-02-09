@@ -43,7 +43,7 @@ def build_dialogue(dialogue_id: str, topic: str, counter_topic: str) -> list[dic
     turns: list[dict[str, str]] = []
     for a_tmpl, b_tmpl in BASE_TEMPLATES:
         turns.append({"speaker": "Alice", "text": a_tmpl.format(topic=topic, counter_topic=counter_topic)})
-        turns.append({"speaker": "Bob", "text": b_tmpl.git format(topic=topic, counter_topic=counter_topic)})
+        turns.append({"speaker": "Bob", "text": b_tmpl.format(topic=topic, counter_topic=counter_topic)})
     return turns
 
 
