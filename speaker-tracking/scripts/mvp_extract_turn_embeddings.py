@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 
@@ -21,11 +22,38 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--layer", type=int, default=20)
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument(
+        "--hf-token",
+        type=str,
+        default="",
+        help="Hugging Face token. Optional if HF_TOKEN/HUGGINGFACE_TOKEN is already set.",
+    )
+    parser.add_argument(
+        "--ndif-api-key",
+        type=str,
+        default="",
+        help="NDIF API key for hosted workflows. Stored in NDIF_API_KEY env at runtime.",
+    )
+    parser.add_argument(
         "--include-speaker-prefix",
         action="store_true",
         help="If set, format turns as 'Speaker: text'. Default is transcript-style text only.",
     )
     return parser.parse_args()
+
+
+def _resolve_credentials(hf_token: str, ndif_api_key: str) -> dict[str, bool]:
+    resolved_hf = hf_token.strip() or os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_TOKEN")
+    resolved_ndif = ndif_api_key.strip() or os.getenv("NDIF_API_KEY")
+    if resolved_hf:
+        os.environ["HF_TOKEN"] = resolved_hf
+        os.environ["HUGGINGFACE_TOKEN"] = resolved_hf
+        os.environ["HUGGINGFACEHUB_API_TOKEN"] = resolved_hf
+    if resolved_ndif:
+        os.environ["NDIF_API_KEY"] = resolved_ndif
+    return {
+        "has_hf_token": bool(resolved_hf),
+        "has_ndif_api_key": bool(resolved_ndif),
+    }
 
 
 def _load_model(model_id: str, device: str):
@@ -91,6 +119,10 @@ def main() -> None:
     with args.dialogues.open("r", encoding="utf-8") as handle:
         dialogues = json.load(handle)["dialogues"]
 
+    credential_flags = _resolve_credentials(
+        hf_token=args.hf_token,
+        ndif_api_key=args.ndif_api_key,
+    )
     model_ids = [m.strip() for m in args.model_ids.split(",") if m.strip()]
     if not model_ids:
         raise ValueError("Pass at least one model via --model-ids.")
@@ -136,6 +168,7 @@ def main() -> None:
             "model_ids": model_ids,
             "layer": args.layer,
             "include_speaker_prefix": args.include_speaker_prefix,
+            "credentials": credential_flags,
         },
         "turn_embeddings": rows,
     }
