@@ -23,3 +23,6 @@ checkpoints/
 *.pt
 *.pth
 *.ckpt 
+
+# local pipeline sandbox
+speaker-tracking/pipeline/
