@@ -247,7 +247,19 @@ def main() -> None:
             }
         )
 
-    payload = {"dialogues": dialogues}
+    payload = {
+        "metadata": {
+            "generator": "mvp_make_noisy_dialogues.py",
+            "num_dialogues": args.num_dialogues,
+            "seed": args.seed,
+            "paraphrase_prob": args.paraphrase_prob,
+            "filler_prob": args.filler_prob,
+            "conversational_prob": args.conversational_prob,
+            "non_alternating_prob": args.non_alternating_prob,
+            "topic_pairs": TOPIC_PAIRS,
+        },
+        "dialogues": dialogues,
+    }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2, ensure_ascii=True)
