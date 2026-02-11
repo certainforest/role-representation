@@ -3,7 +3,6 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import re
 
 random.seed(12)
 torch.manual_seed(12)
@@ -23,35 +22,29 @@ def find_first_diff(list1, list2):
 # CONFIGURATION
 # ══════════════════════════════════════════════════════════════
 
-MODEL_NAME = "Qwen/Qwen3-8B"#"meta-llama/Llama-3.1-8B"#
+MODEL_NAME = "Qwen/Qwen3-8B"#"meta-llama/Llama-3.1-8B"
 
 # Source prompt: provides the activations we patch FROM
-PROMPT_SOURCE = """This is the transcript of a conversation.
+PROMPT_SOURCE = """This is the transcript of a round-robin conversation.
 "I am Alice."
 "I am Bob."
-"I live in France."
-"I heard that Claire lives in France too!"
-"Hi Alice! Yes, I lived in France for a year. But I live in Italy now!"
-"Fun! Where do you live, Bob?"
-"I live in Thailand."
-Question: Who lives in Italy? Answer:"""  # Claire
+"I like basketball."
+"I like soccer."
+Question: What sport does Alice like? Answer: Alice likes"""  # basketball
 
 # Base prompt: the prompt we patch INTO (run with patched activations)
-PROMPT_BASE = """This is the transcript of a conversation.
+PROMPT_BASE = """This is the transcript of a round-robin conversation.
 "I am Alice."
 "I am Bob."
-"I live in France."
-"I heard that Claire lives in France too!"
-"Hi Alice! Yes, I lived in France for a year. But I live in Thailand now!"
-"Fun! Where do you live, Bob?"
-"I live in Italy."
-Question: Who lives in Italy? Answer:"""  # Bob
+"I like soccer."
+"I like basketball."
+Question: What sport does Alice like? Answer: Alice likes"""  # soccer
 
 # Tokens to measure: P(source_answer) - P(base_answer)
-SOURCE_ANSWER = "Claire"
-BASE_ANSWER = "Bob"
+SOURCE_ANSWER = "basketball"
+BASE_ANSWER = "soccer"
 
-OUTPUT_FILE = f"{MODEL_NAME.replace('/', '_')}_activation_patching_binding_three_country.png"
+OUTPUT_FILE = f"{MODEL_NAME.replace('/', '_')}_activation_patching_binding_sport1.png"
 
 # ══════════════════════════════════════════════════════════════
 
@@ -178,6 +171,7 @@ for i in range(first_diff_index, len(base_prompt_ids)):
         token_strings.append(base_tok)
 
 # Find completion boundary: first token after the last '"\n' in the prompt
+import re
 match = list(re.finditer(r'"\n', PROMPT_BASE))
 assert match, "No closing quote + newline found in PROMPT_BASE"
 completion_char_pos = match[-1].end()

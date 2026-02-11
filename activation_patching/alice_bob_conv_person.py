@@ -3,7 +3,6 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import re
 
 random.seed(12)
 torch.manual_seed(12)
@@ -23,35 +22,29 @@ def find_first_diff(list1, list2):
 # CONFIGURATION
 # ══════════════════════════════════════════════════════════════
 
-MODEL_NAME = "Qwen/Qwen3-8B"#"meta-llama/Llama-3.1-8B"#
+MODEL_NAME = "Qwen/Qwen3-8B"#"meta-llama/Llama-3.1-8B"
 
 # Source prompt: provides the activations we patch FROM
 PROMPT_SOURCE = """This is the transcript of a conversation.
 "I am Alice."
 "I am Bob."
 "I live in France."
-"I heard that Claire lives in France too!"
-"Hi Alice! Yes, I lived in France for a year. But I live in Italy now!"
-"Fun! Where do you live, Bob?"
 "I live in Thailand."
-Question: Who lives in Italy? Answer:"""  # Claire
+Question: Who lives in France? Answer:"""  # Alice
 
 # Base prompt: the prompt we patch INTO (run with patched activations)
 PROMPT_BASE = """This is the transcript of a conversation.
 "I am Alice."
 "I am Bob."
+"I live in Thailand."
 "I live in France."
-"I heard that Claire lives in France too!"
-"Hi Alice! Yes, I lived in France for a year. But I live in Thailand now!"
-"Fun! Where do you live, Bob?"
-"I live in Italy."
-Question: Who lives in Italy? Answer:"""  # Bob
+Question: Who lives in France? Answer:"""  # Bob (swapped)
 
 # Tokens to measure: P(source_answer) - P(base_answer)
-SOURCE_ANSWER = "Claire"
+SOURCE_ANSWER = "Alice"
 BASE_ANSWER = "Bob"
 
-OUTPUT_FILE = f"{MODEL_NAME.replace('/', '_')}_activation_patching_binding_three_country.png"
+OUTPUT_FILE = f"{MODEL_NAME.replace('/', '_')}_activation_patching_binding_person_country_1.png"
 
 # ══════════════════════════════════════════════════════════════
 
@@ -178,9 +171,11 @@ for i in range(first_diff_index, len(base_prompt_ids)):
         token_strings.append(base_tok)
 
 # Find completion boundary: first token after the last '"\n' in the prompt
+import re
 match = list(re.finditer(r'"\n', PROMPT_BASE))
 assert match, "No closing quote + newline found in PROMPT_BASE"
 completion_char_pos = match[-1].end()
+# Tokenize up to that point to find the token index
 prefix_tokens = model.tokenizer(PROMPT_BASE[:completion_char_pos]).input_ids
 question_rel_pos = len(prefix_tokens) - first_diff_index
 
