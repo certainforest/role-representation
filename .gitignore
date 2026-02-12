@@ -34,3 +34,5 @@ speaker-tracking/data/*embeddings*.json
 speaker-tracking/data/*results*.json
 speaker-tracking/data/*.png
 speaker-tracking/data/mvp_dialogues_noisy*.json
+speaker-tracking/data/
+.hf_cache/
