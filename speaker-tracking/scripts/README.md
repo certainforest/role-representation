@@ -4,7 +4,7 @@ This is a minimal starting point to validate whether role/filler binding is wort
 
 ## Scripts
 
-- `mvp_make_dialogues.py`: builds small synthetic transcript set with base + speaker-swapped variants.
+- `mvp_make_dialogues.py`: samples real transcripts from MeetingBank and builds base + speaker-swapped variants.
 - `mvp_extract_turn_embeddings.py`: extracts turn-level embeddings from one or many models at one layer.
 - `mvp_role_stability.py`: computes role-vector stability and swap sign-flip checks.
 - `mvp_plot_results.py`: generates a model-comparison figure from `mvp_results.json`.
@@ -12,9 +12,16 @@ This is a minimal starting point to validate whether role/filler binding is wort
 ## Quickstart
 
 ```bash
+# One-time dependency for dataset loading
+pip install datasets
+
 python speaker-tracking/scripts/mvp_make_dialogues.py \
   --output speaker-tracking/data/mvp_dialogues.json \
-  --num-dialogues 20
+  --dataset-id lytang/MeetingBank-transcript \
+  --split train \
+  --num-dialogues 20 \
+  --speaker-text-mode omit \
+  --seed 42
 
 python speaker-tracking/scripts/mvp_extract_turn_embeddings.py \
   --dialogues speaker-tracking/data/mvp_dialogues.json \
@@ -47,6 +54,19 @@ By default, extraction uses transcript-style utterances only (for example `"hi b
 
 - Keep default behavior for natural transcription-style prompts.
 - Use `--include-speaker-prefix` only if you want the explicit tag format for ablations.
+
+## MeetingBank Notes
+
+`mvp_make_dialogues.py` uses `source` text from `lytang/MeetingBank-transcript`, then:
+
+- parses speaker-attributed turns from transcript text
+- keeps the two most frequent speakers per sample
+- remaps them to `Alice`/`Bob` so downstream MVP scripts continue to work
+- emits a `speaker_aliases` field so you can recover original names
+- supports `--speaker-text-mode` for ablations:
+  - `omit`: text excludes speaker IDs (default)
+  - `keep`: text prepends original IDs (`Name: utterance`)
+  - `anonymize`: text prepends stable `SPEAKER_1`/`SPEAKER_2`
 
 ## Credentials
 
