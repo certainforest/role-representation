@@ -12,8 +12,10 @@ from pathlib import Path
 from typing import Any
 
 
+# MeetingBank commonly uses labels like "Speaker 4:".
+_SPEAKER_LABEL = r"[A-Za-z][A-Za-z0-9_ .'\-]{0,59}"
 SPEAKER_UTTERANCE_RE = re.compile(
-    r"(?P<speaker>[A-Za-z][A-Za-z .'\-]{0,59}):\s*(?P<text>.+?)(?=(?:\s+[A-Za-z][A-Za-z .'\-]{0,59}:\s)|$)",
+    rf"(?P<speaker>{_SPEAKER_LABEL}):\s*(?P<text>.+?)(?=(?:\s+{_SPEAKER_LABEL}:\s)|$)",
     re.DOTALL,
 )
 
