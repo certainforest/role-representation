@@ -84,6 +84,15 @@ def parse_args() -> argparse.Namespace:
         default=3,
         help="Retries if output is invalid.",
     )
+    parser.add_argument(
+        "--chunk-turns",
+        type=int,
+        default=20,
+        help=(
+            "Generate dialogues in chunks of this many turns and stitch them. "
+            "Set to 0 to disable chunking."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -191,20 +200,36 @@ def _build_messages(
     num_turns: int,
     min_words_per_turn: int,
     max_words_per_turn: int,
+    prior_turns: list[dict[str, str]] | None = None,
+    required_first_speaker: str = "",
 ) -> list[dict[str, str]]:
     system = (
         "You generate realistic long-form two-speaker transcripts for research. "
         "You must return only valid JSON and no markdown."
+    )
+    continuation = ""
+    if prior_turns:
+        continuation = (
+            "\nContinuation context (already generated turns, do not repeat):\n"
+            f"{json.dumps(prior_turns[-6:], ensure_ascii=True)}\n"
+            "Generate the next turns only.\n"
+        )
+    first_speaker_req = (
+        f'- The first generated turn must have speaker "{required_first_speaker}".\n'
+        if required_first_speaker
+        else ""
     )
     user = (
         "Generate a transcript between Alice and Bob.\n"
         f"Topic: {topic}\n"
         f"Turns: exactly {num_turns}\n"
         f"Each turn length: roughly {min_words_per_turn} to {max_words_per_turn} words\n"
+        f"{continuation}"
         "Constraints:\n"
         "- Output a JSON array only.\n"
         '- Each element is {"speaker": "...", "text": "..."}.\n'
         '- speaker must be exactly "Alice" or "Bob".\n'
+        f"{first_speaker_req}"
         "- Do not include speaker names inside text.\n"
         "- The conversation should be coherent, detailed, and naturally argumentative.\n"
         "- No preamble, no explanation, no code fences."
@@ -275,12 +300,16 @@ def _generate_one_dialogue(
     temperature: float,
     max_completion_tokens: int,
     max_retries: int,
+    prior_turns: list[dict[str, str]] | None = None,
+    required_first_speaker: str = "",
 ) -> list[dict[str, str]]:
     messages = _build_messages(
         topic=topic,
         num_turns=num_turns,
         min_words_per_turn=min_words_per_turn,
         max_words_per_turn=max_words_per_turn,
+        prior_turns=prior_turns,
+        required_first_speaker=required_first_speaker,
     )
     for attempt in range(1, max_retries + 1):
         content = _call_openai_compatible(
@@ -302,11 +331,16 @@ def _generate_one_dialogue(
                     parsed = parsed["dialogue"]
             if not isinstance(parsed, list):
                 raise ValueError("Top-level JSON must be an array.")
-            return _validate_turns(
+            validated = _validate_turns(
                 turns=parsed,
                 num_turns=num_turns,
                 min_words_per_turn=min_words_per_turn,
             )
+            if required_first_speaker and validated[0]["speaker"] != required_first_speaker:
+                raise ValueError(
+                    f'First turn must be "{required_first_speaker}", got "{validated[0]["speaker"]}".'
+                )
+            return validated
         except Exception as exc:
             if attempt == max_retries:
                 raise RuntimeError(
@@ -325,6 +359,59 @@ def _generate_one_dialogue(
     raise RuntimeError("Unreachable.")
 
 
+def _generate_dialogue_with_chunking(
+    *,
+    api_base: str,
+    api_key: str,
+    model: str,
+    topic: str,
+    num_turns: int,
+    min_words_per_turn: int,
+    max_words_per_turn: int,
+    temperature: float,
+    max_completion_tokens: int,
+    max_retries: int,
+    chunk_turns: int,
+) -> list[dict[str, str]]:
+    if chunk_turns <= 0 or chunk_turns >= num_turns:
+        return _generate_one_dialogue(
+            api_base=api_base,
+            api_key=api_key,
+            model=model,
+            topic=topic,
+            num_turns=num_turns,
+            min_words_per_turn=min_words_per_turn,
+            max_words_per_turn=max_words_per_turn,
+            temperature=temperature,
+            max_completion_tokens=max_completion_tokens,
+            max_retries=max_retries,
+        )
+
+    collected: list[dict[str, str]] = []
+    while len(collected) < num_turns:
+        remaining = num_turns - len(collected)
+        target = min(chunk_turns, remaining)
+        required_first_speaker = ""
+        if collected:
+            required_first_speaker = "Bob" if collected[-1]["speaker"] == "Alice" else "Alice"
+        chunk = _generate_one_dialogue(
+            api_base=api_base,
+            api_key=api_key,
+            model=model,
+            topic=topic,
+            num_turns=target,
+            min_words_per_turn=min_words_per_turn,
+            max_words_per_turn=max_words_per_turn,
+            temperature=temperature,
+            max_completion_tokens=max_completion_tokens,
+            max_retries=max_retries,
+            prior_turns=collected,
+            required_first_speaker=required_first_speaker,
+        )
+        collected.extend(chunk)
+    return collected[:num_turns]
+
+
 def main() -> None:
     args = parse_args()
     if args.num_dialogues <= 0:
@@ -333,6 +420,8 @@ def main() -> None:
         raise ValueError("--num-turns must be >= 2.")
     if args.min_words_per_turn <= 0 or args.max_words_per_turn < args.min_words_per_turn:
         raise ValueError("Invalid word range. Ensure 0 < min <= max.")
+    if args.chunk_turns < 0:
+        raise ValueError("--chunk-turns must be >= 0.")
 
     api_key = args.api_key.strip() or os.getenv("OPENAI_API_KEY", "").strip()
     topics = [t.strip() for t in args.topics.split(",") if t.strip()] or DEFAULT_TOPICS
@@ -345,7 +434,7 @@ def main() -> None:
         topic_variant = topic
         if len(topics) == 1:
             topic_variant = f"{topic} (dialogue perspective {idx + 1})"
-        turns = _generate_one_dialogue(
+        turns = _generate_dialogue_with_chunking(
             api_base=args.api_base,
             api_key=api_key,
             model=args.model,
@@ -356,6 +445,7 @@ def main() -> None:
             temperature=max(0.0, min(2.0, args.temperature + rng.uniform(-0.1, 0.1))),
             max_completion_tokens=args.max_completion_tokens,
             max_retries=args.max_retries,
+            chunk_turns=args.chunk_turns,
         )
         transcript_id = f"llm_{idx:03d}"
         dialogues.append(
@@ -377,6 +467,7 @@ def main() -> None:
             "num_turns": args.num_turns,
             "min_words_per_turn": args.min_words_per_turn,
             "max_words_per_turn": args.max_words_per_turn,
+            "chunk_turns": args.chunk_turns,
             "seed": args.seed,
             "topics": topics,
         },
