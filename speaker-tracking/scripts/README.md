@@ -5,6 +5,7 @@ This is a minimal starting point to validate whether role/filler binding is wort
 ## Scripts
 
 - `mvp_make_dialogues.py`: samples real transcripts from MeetingBank and builds base + speaker-swapped variants.
+- `mvp_generate_llm_dialogues.py`: generates long synthetic Alice/Bob transcripts directly from an LLM.
 - `mvp_extract_turn_embeddings.py`: extracts turn-level embeddings from one or many models at one layer.
 - `mvp_role_stability.py`: computes role-vector stability and swap sign-flip checks.
 - `mvp_plot_results.py`: generates a model-comparison figure from `mvp_results.json`.
@@ -22,6 +23,16 @@ python speaker-tracking/scripts/mvp_make_dialogues.py \
   --num-dialogues 20 \
   --speaker-text-mode omit \
   --seed 42
+
+# Alternative: generate long Alice/Bob transcripts from an LLM
+export OPENAI_API_KEY="your_key_here"
+python speaker-tracking/scripts/mvp_generate_llm_dialogues.py \
+  --output speaker-tracking/data/mvp_dialogues.json \
+  --model gpt-4o-mini \
+  --num-dialogues 20 \
+  --num-turns 120 \
+  --min-words-per-turn 30 \
+  --max-words-per-turn 80
 
 python speaker-tracking/scripts/mvp_extract_turn_embeddings.py \
   --dialogues speaker-tracking/data/mvp_dialogues.json \
