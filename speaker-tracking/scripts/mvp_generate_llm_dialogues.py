@@ -423,7 +423,10 @@ def _generate_dialogue_with_chunking(
         required_first_speaker = ""
         if collected:
             required_first_speaker = "Bob" if collected[-1]["speaker"] == "Alice" else "Alice"
-        min_required_turns = max(1, int(target * 0.6))
+        # In practice some providers (notably via OpenRouter) may return short
+        # but valid continuation chunks. Accept small chunks and keep iterating
+        # so generation makes forward progress instead of aborting.
+        min_required_turns = min(target, 2)
         chunk = _generate_one_dialogue(
             api_base=api_base,
             api_key=api_key,
