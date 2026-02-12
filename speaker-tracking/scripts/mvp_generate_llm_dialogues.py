@@ -178,9 +178,15 @@ def _validate_turns(
     num_turns: int,
     min_words_per_turn: int,
     min_words_tolerance: int,
+    min_required_turns: int | None = None,
 ) -> list[dict[str, str]]:
-    if len(turns) < num_turns:
-        raise ValueError(f"Expected at least {num_turns} turns, got {len(turns)}.")
+    if min_required_turns is None:
+        min_required_turns = num_turns
+    min_required_turns = max(1, min_required_turns)
+    if len(turns) < min_required_turns:
+        raise ValueError(
+            f"Expected at least {min_required_turns} turns, got {len(turns)}."
+        )
     if len(turns) > num_turns:
         turns = turns[:num_turns]
 
@@ -317,6 +323,7 @@ def _generate_one_dialogue(
     max_completion_tokens: int,
     max_retries: int,
     min_words_tolerance: int,
+    min_required_turns: int | None = None,
     prior_turns: list[dict[str, str]] | None = None,
     required_first_speaker: str = "",
 ) -> list[dict[str, str]]:
@@ -353,6 +360,7 @@ def _generate_one_dialogue(
                 num_turns=num_turns,
                 min_words_per_turn=min_words_per_turn,
                 min_words_tolerance=min_words_tolerance,
+                min_required_turns=min_required_turns,
             )
             if required_first_speaker and validated[0]["speaker"] != required_first_speaker:
                 raise ValueError(
@@ -405,6 +413,7 @@ def _generate_dialogue_with_chunking(
             max_completion_tokens=max_completion_tokens,
             max_retries=max_retries,
             min_words_tolerance=min_words_tolerance,
+            min_required_turns=num_turns,
         )
 
     collected: list[dict[str, str]] = []
@@ -414,6 +423,7 @@ def _generate_dialogue_with_chunking(
         required_first_speaker = ""
         if collected:
             required_first_speaker = "Bob" if collected[-1]["speaker"] == "Alice" else "Alice"
+        min_required_turns = max(1, int(target * 0.6))
         chunk = _generate_one_dialogue(
             api_base=api_base,
             api_key=api_key,
@@ -426,6 +436,7 @@ def _generate_dialogue_with_chunking(
             max_completion_tokens=max_completion_tokens,
             max_retries=max_retries,
             min_words_tolerance=min_words_tolerance,
+            min_required_turns=min_required_turns,
             prior_turns=collected,
             required_first_speaker=required_first_speaker,
         )
