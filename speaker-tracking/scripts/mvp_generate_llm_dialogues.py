@@ -85,6 +85,12 @@ def parse_args() -> argparse.Namespace:
         help="Retries if output is invalid.",
     )
     parser.add_argument(
+        "--min-words-tolerance",
+        type=int,
+        default=3,
+        help="Allow this many words below --min-words-per-turn on individual turns.",
+    )
+    parser.add_argument(
         "--chunk-turns",
         type=int,
         default=20,
@@ -171,6 +177,7 @@ def _validate_turns(
     turns: list[dict[str, Any]],
     num_turns: int,
     min_words_per_turn: int,
+    min_words_tolerance: int,
 ) -> list[dict[str, str]]:
     if len(turns) < num_turns:
         raise ValueError(f"Expected at least {num_turns} turns, got {len(turns)}.")
@@ -178,6 +185,8 @@ def _validate_turns(
         turns = turns[:num_turns]
 
     validated: list[dict[str, str]] = []
+    effective_min_words = max(1, min_words_per_turn - max(0, min_words_tolerance))
+    word_counts: list[int] = []
     for idx, turn in enumerate(turns):
         if not isinstance(turn, dict):
             raise ValueError(f"Turn {idx} is not an object.")
@@ -187,11 +196,18 @@ def _validate_turns(
             raise ValueError(f"Turn {idx} has invalid speaker '{speaker}'.")
         if not text:
             raise ValueError(f"Turn {idx} has empty text.")
-        if _word_count(text) < min_words_per_turn:
+        wc = _word_count(text)
+        word_counts.append(wc)
+        if wc < effective_min_words:
             raise ValueError(
-                f"Turn {idx} too short ({_word_count(text)} words, need >= {min_words_per_turn})."
+                f"Turn {idx} too short ({wc} words, need >= {effective_min_words})."
             )
         validated.append({"speaker": speaker, "text": text})
+    mean_words = sum(word_counts) / float(len(word_counts))
+    if mean_words < float(min_words_per_turn):
+        raise ValueError(
+            f"Average turn length too short ({mean_words:.1f}, need >= {min_words_per_turn})."
+        )
     return validated
 
 
@@ -300,6 +316,7 @@ def _generate_one_dialogue(
     temperature: float,
     max_completion_tokens: int,
     max_retries: int,
+    min_words_tolerance: int,
     prior_turns: list[dict[str, str]] | None = None,
     required_first_speaker: str = "",
 ) -> list[dict[str, str]]:
@@ -335,6 +352,7 @@ def _generate_one_dialogue(
                 turns=parsed,
                 num_turns=num_turns,
                 min_words_per_turn=min_words_per_turn,
+                min_words_tolerance=min_words_tolerance,
             )
             if required_first_speaker and validated[0]["speaker"] != required_first_speaker:
                 raise ValueError(
@@ -372,6 +390,7 @@ def _generate_dialogue_with_chunking(
     max_completion_tokens: int,
     max_retries: int,
     chunk_turns: int,
+    min_words_tolerance: int,
 ) -> list[dict[str, str]]:
     if chunk_turns <= 0 or chunk_turns >= num_turns:
         return _generate_one_dialogue(
@@ -385,6 +404,7 @@ def _generate_dialogue_with_chunking(
             temperature=temperature,
             max_completion_tokens=max_completion_tokens,
             max_retries=max_retries,
+            min_words_tolerance=min_words_tolerance,
         )
 
     collected: list[dict[str, str]] = []
@@ -405,6 +425,7 @@ def _generate_dialogue_with_chunking(
             temperature=temperature,
             max_completion_tokens=max_completion_tokens,
             max_retries=max_retries,
+            min_words_tolerance=min_words_tolerance,
             prior_turns=collected,
             required_first_speaker=required_first_speaker,
         )
@@ -420,6 +441,8 @@ def main() -> None:
         raise ValueError("--num-turns must be >= 2.")
     if args.min_words_per_turn <= 0 or args.max_words_per_turn < args.min_words_per_turn:
         raise ValueError("Invalid word range. Ensure 0 < min <= max.")
+    if args.min_words_tolerance < 0:
+        raise ValueError("--min-words-tolerance must be >= 0.")
     if args.chunk_turns < 0:
         raise ValueError("--chunk-turns must be >= 0.")
 
@@ -446,6 +469,7 @@ def main() -> None:
             max_completion_tokens=args.max_completion_tokens,
             max_retries=args.max_retries,
             chunk_turns=args.chunk_turns,
+            min_words_tolerance=args.min_words_tolerance,
         )
         transcript_id = f"llm_{idx:03d}"
         dialogues.append(
@@ -467,6 +491,7 @@ def main() -> None:
             "num_turns": args.num_turns,
             "min_words_per_turn": args.min_words_per_turn,
             "max_words_per_turn": args.max_words_per_turn,
+            "min_words_tolerance": args.min_words_tolerance,
             "chunk_turns": args.chunk_turns,
             "seed": args.seed,
             "topics": topics,
