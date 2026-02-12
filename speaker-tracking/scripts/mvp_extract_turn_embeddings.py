@@ -92,15 +92,13 @@ def _load_model_ndif(model_id: str):
     if not ndif_api_key:
         raise RuntimeError("Missing NDIF_API_KEY for --backend ndif.")
 
+    # NNsight/NDIF reads auth from NDIF_API_KEY env. Passing api/token kwargs can
+    # leak through to HF model constructors in some versions and crash.
     constructor_attempts = [
-        {"api_key": ndif_api_key, "provider": "ndif", "remote": True},
-        {"token": ndif_api_key, "provider": "ndif", "remote": True},
-        {"api_key": ndif_api_key, "remote": True},
-        {"token": ndif_api_key, "remote": True},
-        {"api_key": ndif_api_key, "provider": "ndif"},
-        {"token": ndif_api_key, "provider": "ndif"},
-        {"api_key": ndif_api_key},
-        {"token": ndif_api_key},
+        {},
+        {"remote": True},
+        {"provider": "ndif"},
+        {"provider": "ndif", "remote": True},
     ]
     last_error: Exception | None = None
     model = None
@@ -173,14 +171,12 @@ def _embed_turn(
                 layer_module = _resolve_layer_module(model, layer)
                 saved = layer_module.output[0].save()
             h = _saved_value(saved)[0]
-        except Exception:
-            # Fallback path for wrappers that expose HF-compatible forward.
-            model_inputs = {"input_ids": input_ids}
-            if attention_mask is not None:
-                model_inputs["attention_mask"] = attention_mask
-            with torch_mod.no_grad():
-                outputs = model(**model_inputs, output_hidden_states=True)
-            h = outputs.hidden_states[layer][0]
+        except Exception as exc:
+            raise RuntimeError(
+                "NDIF trace execution failed. "
+                "This often indicates an incompatible nnsight/model/runtime combination. "
+                f"Original error: {exc}"
+            ) from exc
     else:
         raise ValueError(f"Unsupported backend '{backend}'.")
 
