@@ -103,6 +103,57 @@ def _strip_code_fences(text: str) -> str:
     return stripped
 
 
+def _extract_text_from_content(content: Any) -> str:
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        chunks: list[str] = []
+        for item in content:
+            if isinstance(item, dict):
+                text = item.get("text")
+                if isinstance(text, str) and text.strip():
+                    chunks.append(text)
+        return "\n".join(chunks).strip()
+    return ""
+
+
+def _extract_json_candidate(raw_text: str) -> Any:
+    text = _strip_code_fences(raw_text).strip()
+    if not text:
+        raise ValueError("Model output is empty.")
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Fallback: parse first balanced JSON array from free-form text.
+    start = text.find("[")
+    if start == -1:
+        raise ValueError("No JSON array start '[' found in model output.")
+    depth = 0
+    in_string = False
+    escaped = False
+    for idx in range(start, len(text)):
+        ch = text[idx]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == "[":
+            depth += 1
+        elif ch == "]":
+            depth -= 1
+            if depth == 0:
+                return json.loads(text[start : idx + 1])
+    raise ValueError("Could not find balanced JSON array in model output.")
+
+
 def _word_count(text: str) -> int:
     return len([w for w in text.split() if w.strip()])
 
@@ -175,7 +226,11 @@ def _call_openai_compatible(
         "messages": messages,
         "temperature": temperature,
         "max_completion_tokens": max_completion_tokens,
+        # Many OpenAI-compatible providers use max_tokens.
+        "max_tokens": max_completion_tokens,
     }
+    if "openrouter.ai" in api_base:
+        payload["response_format"] = {"type": "json_object"}
     req = urlrequest.Request(
         endpoint,
         data=json.dumps(payload).encode("utf-8"),
@@ -183,6 +238,8 @@ def _call_openai_compatible(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "HTTP-Referer": os.getenv("OPENROUTER_SITE_URL", "https://github.com/certainforest/role-representation"),
+            "X-Title": os.getenv("OPENROUTER_APP_NAME", "role-representation"),
         },
     )
     try:
@@ -199,8 +256,8 @@ def _call_openai_compatible(
     if not choices:
         raise RuntimeError("LLM API returned no choices.")
     message = choices[0].get("message", {})
-    content = message.get("content", "")
-    if not isinstance(content, str) or not content.strip():
+    content = _extract_text_from_content(message.get("content", ""))
+    if not content.strip():
         raise RuntimeError("LLM API returned empty content.")
     return content
 
@@ -234,7 +291,13 @@ def _generate_one_dialogue(
         )
         raw = _strip_code_fences(content)
         try:
-            parsed = json.loads(raw)
+            parsed = _extract_json_candidate(raw)
+            if isinstance(parsed, dict):
+                # Permit object wrappers from strict JSON mode.
+                if isinstance(parsed.get("turns"), list):
+                    parsed = parsed["turns"]
+                elif isinstance(parsed.get("dialogue"), list):
+                    parsed = parsed["dialogue"]
             if not isinstance(parsed, list):
                 raise ValueError("Top-level JSON must be an array.")
             return _validate_turns(
