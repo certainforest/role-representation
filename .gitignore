@@ -28,6 +28,7 @@ checkpoints/
 speaker-tracking/pipeline/
 
 # Experiment artifacts
+speaker-tracking/data/
 speaker-tracking/data/layer_sweep*/
 speaker-tracking/data/*embeddings*.json
 speaker-tracking/data/*results*.json
