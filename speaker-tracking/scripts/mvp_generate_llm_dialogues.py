@@ -163,8 +163,10 @@ def _validate_turns(
     num_turns: int,
     min_words_per_turn: int,
 ) -> list[dict[str, str]]:
-    if len(turns) != num_turns:
-        raise ValueError(f"Expected {num_turns} turns, got {len(turns)}.")
+    if len(turns) < num_turns:
+        raise ValueError(f"Expected at least {num_turns} turns, got {len(turns)}.")
+    if len(turns) > num_turns:
+        turns = turns[:num_turns]
 
     validated: list[dict[str, str]] = []
     for idx, turn in enumerate(turns):
