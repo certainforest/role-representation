@@ -15,6 +15,8 @@ This is a minimal starting point to validate whether role/filler binding is wort
 ```bash
 # One-time dependency for dataset loading
 pip install datasets
+# Optional for hosted NDIF backend
+pip install nnsight
 
 python speaker-tracking/scripts/mvp_make_dialogues.py \
   --output speaker-tracking/data/mvp_dialogues.json \
@@ -39,6 +41,7 @@ python speaker-tracking/scripts/mvp_extract_turn_embeddings.py \
   --output speaker-tracking/data/mvp_turn_embeddings.json \
   --model-ids "allenai/OLMo-3-1025-7B,google/gemma-2-9b-it,google/gemma-3-4b-pt,meta-llama/Meta-Llama-3.1-8B-Instruct" \
   --layer 20 \
+  --backend hf \
   --hf-token "$HF_TOKEN" \
   --ndif-api-key "$NDIF_API_KEY"
 
@@ -85,6 +88,9 @@ By default, extraction uses transcript-style utterances only (for example `"hi b
 
 - `--hf-token` for gated Hugging Face model access
 - `--ndif-api-key` for hosted NDIF workflows
+- `--backend` to select extraction backend:
+  - `hf` (default): local transformers model load/inference
+  - `ndif`: hosted NDIF inference (requires `nnsight` + `NDIF_API_KEY`)
 
 Both are optional when environment variables are already set:
 

@@ -22,6 +22,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--layer", type=int, default=20)
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument(
+        "--backend",
+        type=str,
+        choices=("hf", "ndif"),
+        default="hf",
+        help="Extraction backend: local HF model load ('hf') or hosted NDIF ('ndif').",
+    )
+    parser.add_argument(
         "--hf-token",
         type=str,
         default="",
@@ -56,7 +63,7 @@ def _resolve_credentials(hf_token: str, ndif_api_key: str) -> dict[str, bool]:
     }
 
 
-def _load_model(model_id: str, device: str):
+def _load_model_hf(model_id: str, device: str):
     try:
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -65,7 +72,78 @@ def _load_model(model_id: str, device: str):
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(model_id).to(device)
     model.eval()
-    return torch, tokenizer, model
+    return torch, tokenizer, model, "hf"
+
+
+def _load_model_ndif(model_id: str):
+    try:
+        import torch
+        from transformers import AutoTokenizer
+    except ImportError as exc:  # pragma: no cover
+        raise RuntimeError("Install torch + transformers for extraction.") from exc
+    try:
+        from nnsight import LanguageModel
+    except ImportError as exc:  # pragma: no cover
+        raise RuntimeError(
+            "NDIF backend requires nnsight. Install with: pip install nnsight"
+        ) from exc
+
+    ndif_api_key = os.getenv("NDIF_API_KEY", "").strip()
+    if not ndif_api_key:
+        raise RuntimeError("Missing NDIF_API_KEY for --backend ndif.")
+
+    constructor_attempts = [
+        {"api_key": ndif_api_key, "provider": "ndif", "remote": True},
+        {"token": ndif_api_key, "provider": "ndif", "remote": True},
+        {"api_key": ndif_api_key, "remote": True},
+        {"token": ndif_api_key, "remote": True},
+        {"api_key": ndif_api_key, "provider": "ndif"},
+        {"token": ndif_api_key, "provider": "ndif"},
+        {"api_key": ndif_api_key},
+        {"token": ndif_api_key},
+    ]
+    last_error: Exception | None = None
+    model = None
+    for kwargs in constructor_attempts:
+        try:
+            model = LanguageModel(model_id, **kwargs)
+            break
+        except Exception as exc:  # pragma: no cover
+            last_error = exc
+    if model is None:
+        raise RuntimeError(
+            f"Could not initialize NDIF LanguageModel for '{model_id}'. "
+            f"Last error: {last_error}"
+        )
+
+    tokenizer = getattr(model, "tokenizer", None)
+    if tokenizer is None:
+        hf_token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_TOKEN") or None
+        tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token)
+    return torch, tokenizer, model, "ndif"
+
+
+def _resolve_layer_module(model, layer: int):
+    layer_paths = (
+        ("model", "layers"),
+        ("model", "model", "layers"),
+        ("transformer", "h"),
+    )
+    for path in layer_paths:
+        current = model
+        ok = True
+        for attr in path:
+            if not hasattr(current, attr):
+                ok = False
+                break
+            current = getattr(current, attr)
+        if ok and hasattr(current, "__getitem__"):
+            return current[layer]
+    raise RuntimeError("Could not locate decoder layers on NDIF model wrapper.")
+
+
+def _saved_value(saved_obj):
+    return getattr(saved_obj, "value", saved_obj)
 
 
 def _embed_turn(
@@ -76,14 +154,36 @@ def _embed_turn(
     layer: int,
     span_start: int,
     span_end: int,
+    backend: str,
 ) -> list[float]:
     encoded = tokenizer(text, return_tensors="pt", return_offsets_mapping=True)
-    encoded = {k: v.to(model.device) for k, v in encoded.items()}
     offsets = encoded["offset_mapping"][0].detach().cpu().tolist()
-    model_inputs = {k: v for k, v in encoded.items() if k in {"input_ids", "attention_mask"}}
-    with torch_mod.no_grad():
-        outputs = model(**model_inputs, output_hidden_states=True)
-    h = outputs.hidden_states[layer][0]  # [seq, dim]
+
+    if backend == "hf":
+        encoded = {k: v.to(model.device) for k, v in encoded.items()}
+        model_inputs = {k: v for k, v in encoded.items() if k in {"input_ids", "attention_mask"}}
+        with torch_mod.no_grad():
+            outputs = model(**model_inputs, output_hidden_states=True)
+        h = outputs.hidden_states[layer][0]  # [seq, dim]
+    elif backend == "ndif":
+        input_ids = encoded["input_ids"]
+        attention_mask = encoded.get("attention_mask")
+        try:
+            with model.trace(input_ids, attention_mask=attention_mask):
+                layer_module = _resolve_layer_module(model, layer)
+                saved = layer_module.output[0].save()
+            h = _saved_value(saved)[0]
+        except Exception:
+            # Fallback path for wrappers that expose HF-compatible forward.
+            model_inputs = {"input_ids": input_ids}
+            if attention_mask is not None:
+                model_inputs["attention_mask"] = attention_mask
+            with torch_mod.no_grad():
+                outputs = model(**model_inputs, output_hidden_states=True)
+            h = outputs.hidden_states[layer][0]
+    else:
+        raise ValueError(f"Unsupported backend '{backend}'.")
+
     selected = []
     for idx, (start, end) in enumerate(offsets):
         if end <= start:
@@ -128,7 +228,10 @@ def main() -> None:
         raise ValueError("Pass at least one model via --model-ids.")
     rows: list[dict[str, object]] = []
     for model_id in model_ids:
-        torch_mod, tokenizer, model = _load_model(model_id, args.device)
+        if args.backend == "ndif":
+            torch_mod, tokenizer, model, active_backend = _load_model_ndif(model_id)
+        else:
+            torch_mod, tokenizer, model, active_backend = _load_model_hf(model_id, args.device)
         for item in dialogues:
             transcript_id = item["transcript_id"]
             topic = item.get("topic", "")
@@ -148,6 +251,7 @@ def main() -> None:
                         layer=args.layer,
                         span_start=span_start,
                         span_end=span_end,
+                        backend=active_backend,
                     )
                     rows.append(
                         {
@@ -167,6 +271,7 @@ def main() -> None:
         "metadata": {
             "model_ids": model_ids,
             "layer": args.layer,
+            "backend": args.backend,
             "include_speaker_prefix": args.include_speaker_prefix,
             "credentials": credential_flags,
         },

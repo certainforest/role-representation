@@ -32,6 +32,13 @@ def parse_args() -> argparse.Namespace:
         help="Directory to store embeddings, results, and merged outputs.",
     )
     parser.add_argument("--device", type=str, default="cpu")
+    parser.add_argument(
+        "--backend",
+        type=str,
+        choices=("hf", "ndif"),
+        default="hf",
+        help="Embedding extraction backend passed to mvp_extract_turn_embeddings.py.",
+    )
     parser.add_argument("--hf-token", type=str, default="")
     parser.add_argument("--ndif-api-key", type=str, default="")
     parser.add_argument("--include-speaker-prefix", action="store_true")
@@ -155,6 +162,8 @@ def main() -> None:
                     model_id,
                     "--layer",
                     str(layer),
+                    "--backend",
+                    args.backend,
                     "--device",
                     args.device,
                 ]
