@@ -95,10 +95,10 @@ def _load_model_ndif(model_id: str):
     # NNsight/NDIF reads auth from NDIF_API_KEY env. Passing api/token kwargs can
     # leak through to HF model constructors in some versions and crash.
     constructor_attempts = [
-        {},
-        {"remote": True},
-        {"provider": "ndif"},
         {"provider": "ndif", "remote": True},
+        {"provider": "ndif"},
+        {"remote": True},
+        {},
     ]
     last_error: Exception | None = None
     model = None
