@@ -144,27 +144,6 @@ def _saved_value(saved_obj):
     return getattr(saved_obj, "value", saved_obj)
 
 
-def _normalize_hidden_states(torch_mod, hidden):
-    """Return hidden states as [seq, dim] tensor."""
-    if isinstance(hidden, (tuple, list)) and hidden:
-        hidden = hidden[0]
-    if not hasattr(hidden, "ndim"):
-        raise RuntimeError("Hidden states are not a tensor-like object.")
-
-    if hidden.ndim == 3:  # [batch, seq, dim]
-        hidden = hidden[0]
-    elif hidden.ndim == 2:  # [seq, dim]
-        pass
-    elif hidden.ndim == 1:  # [seq] -> treat as dim=1
-        hidden = hidden.unsqueeze(-1)
-    else:
-        raise RuntimeError(f"Unexpected hidden state rank: ndim={hidden.ndim}")
-
-    if hidden.ndim != 2:
-        raise RuntimeError("Could not normalize hidden states to [seq, dim].")
-    return hidden
-
-
 def _embed_turn(
     torch_mod,
     tokenizer,
@@ -183,7 +162,7 @@ def _embed_turn(
         model_inputs = {k: v for k, v in encoded.items() if k in {"input_ids", "attention_mask"}}
         with torch_mod.no_grad():
             outputs = model(**model_inputs, output_hidden_states=True)
-        h = _normalize_hidden_states(torch_mod, outputs.hidden_states[layer])  # [seq, dim]
+        h = outputs.hidden_states[layer][0]  # [seq, dim]
     elif backend == "ndif":
         input_ids = encoded["input_ids"]
         attention_mask = encoded.get("attention_mask")
@@ -191,7 +170,7 @@ def _embed_turn(
             with model.trace(input_ids, attention_mask=attention_mask):
                 layer_module = _resolve_layer_module(model, layer)
                 saved = layer_module.output[0].save()
-            h = _normalize_hidden_states(torch_mod, _saved_value(saved))
+            h = _saved_value(saved)[0]
         except Exception as exc:
             raise RuntimeError(
                 "NDIF trace execution failed. "
@@ -208,10 +187,7 @@ def _embed_turn(
         if start >= span_start and end <= span_end:
             selected.append(h[idx])
     pooled = torch_mod.stack(selected, dim=0).mean(dim=0) if selected else h.mean(dim=0)
-    pooled = pooled.detach().cpu()
-    if pooled.ndim == 0:
-        return [float(pooled.item())]
-    return [float(x) for x in pooled.tolist()]
+    return [float(x) for x in pooled.detach().cpu().tolist()]
 
 
 def _render_context(
