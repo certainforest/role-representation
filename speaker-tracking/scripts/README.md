@@ -9,6 +9,9 @@ This is a minimal starting point to validate whether role/filler binding is wort
 - `mvp_extract_turn_embeddings.py`: extracts turn-level embeddings from one or many models at one layer.
 - `mvp_role_stability.py`: computes role-vector stability and swap sign-flip checks.
 - `mvp_plot_results.py`: generates a model-comparison figure from `mvp_results.json`.
+- `mvp_linear_probe.py`: runs leakage-aware linear probes (role/variant/topic) with transcript/topic grouped splits.
+- `mvp_role_direction_eval.py`: evaluates held-out role-direction ("function vector"-style) behavior with shuffled/random controls.
+- `mvp_role_geometry.py`: computes representation-geometry metrics and saves PCA/trajectory/heatmap figures.
 
 ## Quickstart
 
@@ -52,6 +55,25 @@ python speaker-tracking/scripts/mvp_role_stability.py \
 python speaker-tracking/scripts/mvp_plot_results.py \
   --results speaker-tracking/data/mvp_results.json \
   --output speaker-tracking/data/mvp_results.png
+
+python speaker-tracking/scripts/mvp_linear_probe.py \
+  --embeddings speaker-tracking/data/mvp_turn_embeddings.json \
+  --output speaker-tracking/data/mvp_linear_probe.json \
+  --tasks role,variant,topic \
+  --split-mode transcript \
+  --num-seeds 5
+
+python speaker-tracking/scripts/mvp_role_direction_eval.py \
+  --embeddings speaker-tracking/data/mvp_turn_embeddings.json \
+  --output speaker-tracking/data/mvp_role_direction_eval.json \
+  --split-mode transcript \
+  --num-seeds 5 \
+  --num-random-directions 20
+
+python speaker-tracking/scripts/mvp_role_geometry.py \
+  --embeddings speaker-tracking/data/mvp_turn_embeddings.json \
+  --output-json speaker-tracking/data/mvp_role_geometry.json \
+  --output-dir speaker-tracking/data/geometry_plots
 ```
 
 ## Output
@@ -61,6 +83,12 @@ python speaker-tracking/scripts/mvp_plot_results.py \
 - per-model mean pairwise role-vector cosine across dialogues
 - per-model per-transcript role-vector norms
 - per-model swap sign-flip consistency score
+
+New analysis outputs include:
+
+- `mvp_linear_probe.json`: per-model probe metrics (accuracy, balanced accuracy, optional AUC) with per-seed breakdown.
+- `mvp_role_direction_eval.json`: held-out direction accuracy, swap-flip rates, label-shuffle and random-direction controls.
+- `mvp_role_geometry.json` + `geometry_plots/`: centroid/separability geometry metrics and diagnostic plots.
 
 ## Transcript-style Input
 
