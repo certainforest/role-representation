@@ -6,7 +6,29 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import time
 from pathlib import Path
+
+DEBUG_LOG_PATH = Path(
+    "/Users/jessebafernando/Dropbox/My Mac (Jesseba’s MacBook Pro)/Documents/GitHub/role-representation/.cursor/debug.log"
+)
+
+
+def _debug_log(hypothesis_id: str, location: str, message: str, data: dict[str, object]) -> None:
+    payload = {
+        "id": f"log_{int(time.time() * 1000)}_{os.getpid()}",
+        "timestamp": int(time.time() * 1000),
+        "runId": "pre-fix",
+        "hypothesisId": hypothesis_id,
+        "location": location,
+        "message": message,
+        "data": data,
+    }
+    try:
+        with DEBUG_LOG_PATH.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(payload, ensure_ascii=True) + "\n")
+    except Exception:
+        pass
 
 
 def parse_args() -> argparse.Namespace:
@@ -98,13 +120,45 @@ def _load_model_ndif(model_id: str):
         {"remote": True},
         {},
     ]
+    # region agent log
+    _debug_log(
+        "H1",
+        "mvp_extract_turn_embeddings.py:_load_model_ndif",
+        "Starting NDIF constructor attempts",
+        {
+            "model_id": model_id,
+            "attempts": [sorted(kwargs.keys()) for kwargs in constructor_attempts],
+        },
+    )
+    # endregion
     last_error: Exception | None = None
     model = None
-    for kwargs in constructor_attempts:
+    for idx, kwargs in enumerate(constructor_attempts):
         try:
             model = LanguageModel(model_id, **kwargs)
+            # region agent log
+            _debug_log(
+                "H1",
+                "mvp_extract_turn_embeddings.py:_load_model_ndif",
+                "NDIF constructor attempt succeeded",
+                {"attempt_idx": idx, "kwargs": kwargs},
+            )
+            # endregion
             break
         except Exception as exc:  # pragma: no cover
+            # region agent log
+            _debug_log(
+                "H1",
+                "mvp_extract_turn_embeddings.py:_load_model_ndif",
+                "NDIF constructor attempt failed",
+                {
+                    "attempt_idx": idx,
+                    "kwargs": kwargs,
+                    "error_type": type(exc).__name__,
+                    "error": str(exc)[:500],
+                },
+            )
+            # endregion
             last_error = exc
     if model is None:
         raise RuntimeError(
@@ -134,6 +188,14 @@ def _resolve_layer_module(model, layer: int):
                 break
             current = getattr(current, attr)
         if ok and hasattr(current, "__getitem__"):
+            # region agent log
+            _debug_log(
+                "H3",
+                "mvp_extract_turn_embeddings.py:_resolve_layer_module",
+                "Resolved layer path",
+                {"path": ".".join(path), "layer": layer},
+            )
+            # endregion
             return current[layer]
     raise RuntimeError("Could not locate decoder layers on NDIF model wrapper.")
 
@@ -164,6 +226,20 @@ def _embed_turn(
     elif backend == "ndif":
         input_ids = encoded["input_ids"]
         attention_mask = encoded.get("attention_mask")
+        # region agent log
+        _debug_log(
+            "H2",
+            "mvp_extract_turn_embeddings.py:_embed_turn",
+            "Entering NDIF trace",
+            {
+                "layer": layer,
+                "input_shape": list(input_ids.shape),
+                "has_attention_mask": attention_mask is not None,
+                "span_start": span_start,
+                "span_end": span_end,
+            },
+        )
+        # endregion
         try:
             with model.trace(input_ids, attention_mask=attention_mask):
                 layer_module = _resolve_layer_module(model, layer)
@@ -171,7 +247,29 @@ def _embed_turn(
             h = _saved_value(saved)
             if hasattr(h, "dim") and h.dim() == 3:
                 h = h[0]
+            # region agent log
+            _debug_log(
+                "H4",
+                "mvp_extract_turn_embeddings.py:_embed_turn",
+                "NDIF trace produced hidden state",
+                {
+                    "h_dim": int(h.dim()) if hasattr(h, "dim") else None,
+                    "h_shape": list(h.shape) if hasattr(h, "shape") else None,
+                },
+            )
+            # endregion
         except Exception as exc:
+            # region agent log
+            _debug_log(
+                "H2",
+                "mvp_extract_turn_embeddings.py:_embed_turn",
+                "NDIF trace failed",
+                {
+                    "error_type": type(exc).__name__,
+                    "error": str(exc)[:1200],
+                },
+            )
+            # endregion
             raise RuntimeError(
                 "NDIF trace execution failed. "
                 "This often indicates an incompatible nnsight/model/runtime combination. "
