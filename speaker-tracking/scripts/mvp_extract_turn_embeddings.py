@@ -95,8 +95,6 @@ def _load_model_ndif(model_id: str):
     # NNsight/NDIF reads auth from NDIF_API_KEY env. Passing api/token kwargs can
     # leak through to HF model constructors in some versions and crash.
     constructor_attempts = [
-        {"provider": "ndif", "remote": True},
-        {"provider": "ndif"},
         {"remote": True},
         {},
     ]
@@ -170,7 +168,9 @@ def _embed_turn(
             with model.trace(input_ids, attention_mask=attention_mask):
                 layer_module = _resolve_layer_module(model, layer)
                 saved = layer_module.output[0].save()
-            h = _saved_value(saved)[0]
+            h = _saved_value(saved)
+            if hasattr(h, "dim") and h.dim() == 3:
+                h = h[0]
         except Exception as exc:
             raise RuntimeError(
                 "NDIF trace execution failed. "
