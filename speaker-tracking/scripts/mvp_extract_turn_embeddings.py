@@ -162,6 +162,11 @@ def _embed_turn(
 ) -> list[float]:
     encoded = tokenizer(text, return_tensors="pt", return_offsets_mapping=True)
     offsets = encoded["offset_mapping"][0].detach().cpu().tolist()
+    selected_token_idxs = [
+        i
+        for i, (start, end) in enumerate(offsets)
+        if end > start and start >= span_start and end <= span_end
+    ]
 
     if backend == "hf":
         encoded = {k: v.to(model.device) for k, v in encoded.items()}
@@ -178,14 +183,22 @@ def _embed_turn(
                 trace_kwargs["remote"] = True
             with model.trace(input_ids, **trace_kwargs):
                 layer_module = _resolve_layer_module(model, layer)
-                # For remote, follow nnsight guidance: detach+cpu before saving to reduce payload size.
-                if ndif_remote:
-                    saved = layer_module.output[0].detach().cpu().save()
+                h = layer_module.output[0]
+                if hasattr(h, "dim") and h.dim() == 3:
+                    h = h[0]  # [seq, dim]
+
+                # Pool inside the trace so remote execution only downloads a single vector,
+                # not the full [seq, dim] hidden state.
+                if selected_token_idxs:
+                    pooled = h[selected_token_idxs].mean(dim=0)
                 else:
-                    saved = layer_module.output[0].save()
-            h = _saved_value(saved)
-            if hasattr(h, "dim") and h.dim() == 3:
-                h = h[0]
+                    pooled = h.mean(dim=0)
+
+                if ndif_remote:
+                    saved = pooled.detach().cpu().save()
+                else:
+                    saved = pooled.save()
+            pooled_value = _saved_value(saved)
         except Exception as exc:
             raise RuntimeError(
                 "NDIF trace execution failed. "
@@ -195,12 +208,11 @@ def _embed_turn(
     else:
         raise ValueError(f"Unsupported backend '{backend}'.")
 
-    selected = []
-    for idx, (start, end) in enumerate(offsets):
-        if end <= start:
-            continue
-        if start >= span_start and end <= span_end:
-            selected.append(h[idx])
+    if backend == "ndif":
+        # Already pooled (and for remote, already detached+cpu'd) inside trace.
+        return [float(x) for x in pooled_value.detach().cpu().tolist()]
+
+    selected = [h[idx] for idx in selected_token_idxs]
     pooled = torch_mod.stack(selected, dim=0).mean(dim=0) if selected else h.mean(dim=0)
     return [float(x) for x in pooled.detach().cpu().tolist()]
 
