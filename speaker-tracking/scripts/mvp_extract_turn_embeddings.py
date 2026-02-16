@@ -6,29 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import time
+import sys
 from pathlib import Path
-
-DEBUG_LOG_PATH = Path(
-    "/Users/jessebafernando/Dropbox/My Mac (Jesseba’s MacBook Pro)/Documents/GitHub/role-representation/.cursor/debug.log"
-)
-
-
-def _debug_log(hypothesis_id: str, location: str, message: str, data: dict[str, object]) -> None:
-    payload = {
-        "id": f"log_{int(time.time() * 1000)}_{os.getpid()}",
-        "timestamp": int(time.time() * 1000),
-        "runId": "pre-fix",
-        "hypothesisId": hypothesis_id,
-        "location": location,
-        "message": message,
-        "data": data,
-    }
-    try:
-        with DEBUG_LOG_PATH.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(payload, ensure_ascii=True) + "\n")
-    except Exception:
-        pass
 
 
 def parse_args() -> argparse.Namespace:
@@ -67,6 +46,14 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="If set, format turns as 'Speaker: text'. Default is transcript-style text only.",
     )
+    parser.add_argument(
+        "--ndif-remote",
+        action="store_true",
+        help=(
+            "If set, run NDIF-hosted remote execution by passing remote=True to nnsight trace. "
+            "Requires python==3.12.* on the client per nnsight docs."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -97,7 +84,7 @@ def _load_model_hf(model_id: str, device: str):
     return torch, tokenizer, model, "hf"
 
 
-def _load_model_ndif(model_id: str):
+def _load_model_ndif(model_id: str, ndif_remote: bool):
     try:
         import torch
         from transformers import AutoTokenizer
@@ -114,54 +101,23 @@ def _load_model_ndif(model_id: str):
     if not ndif_api_key:
         raise RuntimeError("Missing NDIF_API_KEY for --backend ndif.")
 
-    # NNsight/NDIF reads auth from NDIF_API_KEY env. Passing api/token kwargs can
-    # leak through to HF model constructors in some versions and crash.
-    constructor_attempts = [{}]
-    # region agent log
-    _debug_log(
-        "H1",
-        "mvp_extract_turn_embeddings.py:_load_model_ndif",
-        "Starting NDIF constructor attempts",
-        {
-            "model_id": model_id,
-            "attempts": [sorted(kwargs.keys()) for kwargs in constructor_attempts],
-        },
-    )
-    # endregion
-    last_error: Exception | None = None
-    model = None
-    for idx, kwargs in enumerate(constructor_attempts):
-        try:
-            model = LanguageModel(model_id, **kwargs)
-            # region agent log
-            _debug_log(
-                "H1",
-                "mvp_extract_turn_embeddings.py:_load_model_ndif",
-                "NDIF constructor attempt succeeded",
-                {"attempt_idx": idx, "kwargs": kwargs},
+    # For true NDIF hosted execution, nnsight requires python==3.12.* on the client,
+    # and remote=True must be passed to the tracing context.
+    if ndif_remote:
+        if (sys.version_info.major, sys.version_info.minor) != (3, 12):
+            raise RuntimeError(
+                "NDIF remote execution requires python==3.12.* on the client "
+                f"(current: {sys.version_info.major}.{sys.version_info.minor}). "
+                "Create a python 3.12 env and re-run with --ndif-remote."
             )
-            # endregion
-            break
-        except Exception as exc:  # pragma: no cover
-            # region agent log
-            _debug_log(
-                "H1",
-                "mvp_extract_turn_embeddings.py:_load_model_ndif",
-                "NDIF constructor attempt failed",
-                {
-                    "attempt_idx": idx,
-                    "kwargs": kwargs,
-                    "error_type": type(exc).__name__,
-                    "error": str(exc)[:500],
-                },
-            )
-            # endregion
-            last_error = exc
-    if model is None:
-        raise RuntimeError(
-            f"Could not initialize NDIF LanguageModel for '{model_id}'. "
-            f"Last error: {last_error}"
-        )
+        from nnsight import CONFIG
+
+        # Prefer explicit config set to avoid relying on env parsing differences.
+        CONFIG.set_default_api_key(ndif_api_key)
+
+    # Instantiate LanguageModel without provider/remote kwargs (those can leak into HF constructors
+    # depending on nnsight/transformers versions). Remote execution is controlled at trace time.
+    model = LanguageModel(model_id)
 
     tokenizer = getattr(model, "tokenizer", None)
     if tokenizer is None:
@@ -185,14 +141,6 @@ def _resolve_layer_module(model, layer: int):
                 break
             current = getattr(current, attr)
         if ok and hasattr(current, "__getitem__"):
-            # region agent log
-            _debug_log(
-                "H3",
-                "mvp_extract_turn_embeddings.py:_resolve_layer_module",
-                "Resolved layer path",
-                {"path": ".".join(path), "layer": layer},
-            )
-            # endregion
             return current[layer]
     raise RuntimeError("Could not locate decoder layers on NDIF model wrapper.")
 
@@ -210,6 +158,7 @@ def _embed_turn(
     span_start: int,
     span_end: int,
     backend: str,
+    ndif_remote: bool,
 ) -> list[float]:
     encoded = tokenizer(text, return_tensors="pt", return_offsets_mapping=True)
     offsets = encoded["offset_mapping"][0].detach().cpu().tolist()
@@ -223,50 +172,21 @@ def _embed_turn(
     elif backend == "ndif":
         input_ids = encoded["input_ids"]
         attention_mask = encoded.get("attention_mask")
-        # region agent log
-        _debug_log(
-            "H2",
-            "mvp_extract_turn_embeddings.py:_embed_turn",
-            "Entering NDIF trace",
-            {
-                "layer": layer,
-                "input_shape": list(input_ids.shape),
-                "has_attention_mask": attention_mask is not None,
-                "span_start": span_start,
-                "span_end": span_end,
-            },
-        )
-        # endregion
         try:
-            with model.trace(input_ids, attention_mask=attention_mask):
+            trace_kwargs = {"attention_mask": attention_mask}
+            if ndif_remote:
+                trace_kwargs["remote"] = True
+            with model.trace(input_ids, **trace_kwargs):
                 layer_module = _resolve_layer_module(model, layer)
-                saved = layer_module.output[0].save()
+                # For remote, follow nnsight guidance: detach+cpu before saving to reduce payload size.
+                if ndif_remote:
+                    saved = layer_module.output[0].detach().cpu().save()
+                else:
+                    saved = layer_module.output[0].save()
             h = _saved_value(saved)
             if hasattr(h, "dim") and h.dim() == 3:
                 h = h[0]
-            # region agent log
-            _debug_log(
-                "H4",
-                "mvp_extract_turn_embeddings.py:_embed_turn",
-                "NDIF trace produced hidden state",
-                {
-                    "h_dim": int(h.dim()) if hasattr(h, "dim") else None,
-                    "h_shape": list(h.shape) if hasattr(h, "shape") else None,
-                },
-            )
-            # endregion
         except Exception as exc:
-            # region agent log
-            _debug_log(
-                "H2",
-                "mvp_extract_turn_embeddings.py:_embed_turn",
-                "NDIF trace failed",
-                {
-                    "error_type": type(exc).__name__,
-                    "error": str(exc)[:1200],
-                },
-            )
-            # endregion
             raise RuntimeError(
                 "NDIF trace execution failed. "
                 "This often indicates an incompatible nnsight/model/runtime combination. "
@@ -307,6 +227,8 @@ def _render_context(
 
 def main() -> None:
     args = parse_args()
+    if args.ndif_remote and args.backend != "ndif":
+        raise ValueError("--ndif-remote requires --backend ndif.")
     with args.dialogues.open("r", encoding="utf-8") as handle:
         dialogues = json.load(handle)["dialogues"]
 
@@ -320,7 +242,9 @@ def main() -> None:
     rows: list[dict[str, object]] = []
     for model_id in model_ids:
         if args.backend == "ndif":
-            torch_mod, tokenizer, model, active_backend = _load_model_ndif(model_id)
+            torch_mod, tokenizer, model, active_backend = _load_model_ndif(
+                model_id, ndif_remote=args.ndif_remote
+            )
         else:
             torch_mod, tokenizer, model, active_backend = _load_model_hf(model_id, args.device)
         for item in dialogues:
@@ -343,6 +267,7 @@ def main() -> None:
                         span_start=span_start,
                         span_end=span_end,
                         backend=active_backend,
+                        ndif_remote=args.ndif_remote,
                     )
                     rows.append(
                         {
