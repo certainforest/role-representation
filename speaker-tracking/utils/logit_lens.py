@@ -11,7 +11,6 @@ sample use:
     df = logit_lens_to_df(model, out, tokens, tokenizer, k=5)
     plot_logit_lens(df, target="A")
 """
-
 import torch
 import pandas as pd
 import numpy as np

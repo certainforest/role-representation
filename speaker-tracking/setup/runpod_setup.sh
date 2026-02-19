@@ -1,5 +1,8 @@
 #!/bin/bash
 set -euo pipefail
+git config --global user.name "Jasmine"
+git config --global user.email "jasminewcui@gmail.com"
+
 curl -LsSf https://astral.sh/uv/install.sh | sh # install uv
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"

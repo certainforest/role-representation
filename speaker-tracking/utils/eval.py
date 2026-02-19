@@ -15,8 +15,28 @@ models = {
     # 'gemma2b-it': 'google/gemma-2-9b-it'
     'olmo3-7b-instruct': 'allenai/olmo-3.1-7b-instruct',
     'olmo3.1-32b-instruct': 'allenai/olmo-3.1-32b-instruct'
-
 }
+
+def generate_chat_template_input(
+        input: str,
+        answer: str, 
+        is_one_shot = True,
+        system_prompt: str = (
+        'You will be provided with a multiple-choice question, as well as a list of '
+        'possible answer choices. Respond exactly with: “The correct answer is {X}“, '
+        'substituting in X with the code for the correct choice.'
+     )
+) -> List[Dict[str, str]]:
+    messages = [{"role": "system", "content": system_prompt}]
+    if is_one_shot: 
+        messages.append({'role': 'user', 'content': 'What is 5+10?\nA. 5\nB. 6\nC. 15\nD. 20'})
+        messages.append({'role': 'assistant', 'content': 'The correct answer is C'})
+    messages.append({'role': 'user', 'content': input})
+    messages.append({'role': 'assistant', 'content': 'The correct answer is'})
+
+    return messages, answer
+
+
 
 def send_slack(text): 
     '''basic slack request w/ webhook'''
