@@ -17,12 +17,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
+from eval import generate_chat_template_input
 
 
-def get_model_outputs(model, tokenizer, text, device = 'cuda'):
-    inputs = tokenizer(text, return_tensors='pt').to(device)
-    with torch.no_grad():
-        out = model(**inputs, output_hidden_states=True, return_dict=True)
+def get_model_outputs(model, tokenizer, text, answer, device = 'cuda'):
+    with torch.no_grads():
+        msg = generate_chat_template_input(text, answer)
+        toks = tokenizer.apply_chat_template(msg, add_special_tokens = False, continue_final_message = True, return_tensors = 'pt').to(device)
+        out = model(
+            **toks,
+            output_hidden_states = True, 
+            return_dict = True
+            )
     tokens = [tokenizer.decode(t) for t in inputs['input_ids'][0]]
     return out, tokens
 
@@ -37,10 +43,10 @@ def logit_lens_to_df(model, out, tokens, tokenizer, k=5):
             top = probs.topk(k)
             for rank in range(k):
                 rows.append({
-                    'layer':         layer_idx,
-                    'rank':          rank,
+                    'layer': layer_idx,
+                    'rank': rank,
                     'decoded_token': tokenizer.decode(top.indices[rank]),
-                    'prob':          top.values[rank].item(),
+                    'prob': top.values[rank].item(),
                 })
     return pd.DataFrame(rows)
 

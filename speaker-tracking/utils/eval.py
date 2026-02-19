@@ -17,6 +17,7 @@ models = {
     'olmo3.1-32b-instruct': 'allenai/olmo-3.1-32b-instruct'
 }
 
+# tk: was this an old function, seems like I was going to add an option for few-shot :) 
 def generate_chat_template_input(
         input: str,
         answer: str, 
