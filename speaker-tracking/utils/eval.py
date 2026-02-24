@@ -18,33 +18,36 @@ models = {
     'olmo3.1-32b-instruct': 'allenai/olmo-3.1-32b-instruct'
 }
 
-# tk: was this an old function, seems like I was going to add an option for few-shot :) 
-def generate_chat_template_input(
-        input: str,
-        answer: str, 
-        is_one_shot = True,
-        system_prompt: str = (
-        'You will be provided with a multiple-choice question, as well as a list of '
-        'possible answer choices. Respond exactly with: “The correct answer is {X}“, '
-        'substituting in X with the code for the correct choice.'
-     )
-) -> List[Dict[str, str]]:
-    messages = [{"role": "system", "content": system_prompt}]
-    if is_one_shot: 
-        messages.append({'role': 'user', 'content': 'What is 5+10?\nA. 5\nB. 6\nC. 15\nD. 20'})
-        messages.append({'role': 'assistant', 'content': 'The correct answer is C'})
-    messages.append({'role': 'user', 'content': input})
-    messages.append({'role': 'assistant', 'content': 'The correct answer is'})
+# turn mapping
+def generate_turn_mapping(doc_path):
+    '''generates a mapping of speaker:lines for a given transcript'''
+    with doc.open('r', encoding = 'utf-8') as f:
+        lines = [" ".join(line.split()) for line in f if line.strip()]
+    convo = ' '.join(lines)
 
-    return messages, answer
+    # regex to find time stamps 
+    time = re.compile(r'\d{2}:\d{2}:\d{2}')
+
+    turns, speaker, msgs = [], None, []
+
+    for ln in lines:
+        if time.search(ln):
+            if speaker and msgs:
+                speaker = time.sub('', speaker).strip()
+                turns.append({'speaker': speaker, 'text': ' '.join(msgs)})
+            speaker, msgs = ln, []
+        else:
+            if speaker:
+                speaker = time.sub('', speaker).strip()
+                msgs.append(ln)
+
+    if speaker and msgs:
+        turns.append({"speaker": speaker, "text": " ".join(msgs)})
+
+    return turns
 
 
-def send_slack(text): 
-    '''basic slack request w/ webhook'''
-    url = os.getenv('SLACK_WEBHOOK_URL')
-    msg = requests.post(url, json = {'text': text})
-    return msg
-    
+# OR requests (for efficientevals)
 def send_openrouter_request(messages, 
                             model = 'google/gemini-2.5-pro',
                             provider_order = ['deepinfra/fp4'],
@@ -92,3 +95,31 @@ def send_openrouter_request(messages,
                 time.sleep(2 ** attempt)
             else:
                 raise e
+
+# tk: was this an old function, seems like I was going to add an option for few-shot :) 
+def generate_chat_template_input(
+        input: str,
+        answer: str, 
+        is_one_shot = True,
+        system_prompt: str = (
+        'You will be provided with a multiple-choice question, as well as a list of '
+        'possible answer choices. Respond exactly with: “The correct answer is {X}“, '
+        'substituting in X with the code for the correct choice.'
+     )
+) -> List[Dict[str, str]]:
+    messages = [{"role": "system", "content": system_prompt}]
+    if is_one_shot: 
+        messages.append({'role': 'user', 'content': 'What is 5+10?\nA. 5\nB. 6\nC. 15\nD. 20'})
+        messages.append({'role': 'assistant', 'content': 'The correct answer is C'})
+    messages.append({'role': 'user', 'content': input})
+    messages.append({'role': 'assistant', 'content': 'The correct answer is'})
+
+    return messages, answer
+
+
+def send_slack(text): 
+    '''basic slack request w/ webhook'''
+    url = os.getenv('SLACK_WEBHOOK_URL')
+    msg = requests.post(url, json = {'text': text})
+    return msg
+    
