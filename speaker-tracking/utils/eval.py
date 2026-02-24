@@ -4,6 +4,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from pathlib import Path
 import time
+from typing import List, Dict
 
 
 models = {
@@ -38,7 +39,6 @@ def generate_chat_template_input(
     return messages, answer
 
 
-
 def send_slack(text): 
     '''basic slack request w/ webhook'''
     url = os.getenv('SLACK_WEBHOOK_URL')
@@ -55,6 +55,7 @@ def send_openrouter_request(messages,
     a simple function that submits a single prompt to a selected model (defaults to gemini 2.5-pro)on openrouter.
     temperature is set to 0 by default for reproducibility. 
     '''
+    load_dotenv()
     OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
     api_key = os.getenv("OPENROUTER_API_KEY")
     headers = {

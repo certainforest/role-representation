@@ -17,22 +17,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
-from eval import generate_chat_template_input
+from utils.eval import generate_chat_template_input
 
 
 def get_model_outputs(model, tokenizer, text, answer, device = 'cuda'):
-    with torch.no_grads():
-        msg = generate_chat_template_input(text, answer)
+    with torch.no_grad():
+        msg, answer = generate_chat_template_input(text, answer)
         toks = tokenizer.apply_chat_template(msg, add_special_tokens = False, continue_final_message = True, return_tensors = 'pt').to(device)
         out = model(
             **toks,
             output_hidden_states = True, 
             return_dict = True
             )
-    tokens = [tokenizer.decode(t) for t in inputs['input_ids'][0]]
+    tokens = [tokenizer.decode(t) for t in toks['input_ids'][0]]
+    breakpoint()
     return out, tokens
 
-
+# TK: fix this -- unsure here
 def logit_lens_to_df(model, out, tokens, tokenizer, k=5):
     rows = []
     with torch.no_grad():
