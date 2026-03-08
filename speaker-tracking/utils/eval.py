@@ -70,3 +70,6 @@ def send_openrouter_request(messages,
                 time.sleep(2 ** attempt)
             else:
                 raise e
+
+
+# TK: segmentation judge 
