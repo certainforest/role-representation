@@ -2,7 +2,14 @@
 
 # environment
 *.venv/
+.venv*/
+venv/
 *.env
+
+# local tool configs
+.claude/
+.cursor/
+.virtual_documents/
 
 # jupyter/py
 .ipynb_checkpoints
@@ -17,6 +24,7 @@
 *.csv
 # *.json
 *.txt
+*.md
 
 # model checkpts 
 checkpoints/
@@ -36,3 +44,31 @@ speaker-tracking/data/*.png
 speaker-tracking/data/mvp_dialogues_noisy*.json
 speaker-tracking/data/
 .hf_cache/
+
+# Notebook outputs (regenerable; keep repo code-only)
+speaker-tracking/notebooks/outputs/
+
+# Geometry / TPR / rank work (cut from paper; kept locally for reference only)
+speaker-tracking/scripts/mvp_role_geometry.py
+speaker-tracking/scripts/mvp_role_direction_eval.py
+speaker-tracking/scripts/mvp_role_stability.py
+speaker-tracking/scripts/mvp_layer_sweep.py
+speaker-tracking/scripts/mvp_tpr_norm_eval.py
+speaker-tracking/scripts/mvp_tpr_interaction_eval.py
+speaker-tracking/scripts/mvp_rank_diagnostics.py
+speaker-tracking/scripts/mvp_dense_role_test.py
+speaker-tracking/scripts/run_exp_geometry_probe.sh
+speaker-tracking/scripts/generate_toy_publication_data.py
+speaker-tracking/notebooks/260203_geometric_structure.ipynb
+speaker-tracking/notebooks/260205_plot_geometric_structure_variants.ipynb
+speaker-tracking/notebooks/260205_role_binding_experiment.ipynb
+speaker-tracking/notebooks/260304_plot_outputs_geometric_structure.ipynb
+speaker-tracking/notebooks/260217_plot_tpr_experiments.ipynb
+speaker-tracking/notebooks/260218_role_direction_geometry_linear_probe.ipynb
+speaker-tracking/notebooks/260417_publication_figures.ipynb
+
+speaker-tracking/notebooks/outputs/*
+speaker-tracking/scripts/mvp_role_geometry.py
+speaker-tracking/scripts/mvp_variant_sanity.py
+/Users/jessebafernando/Dropbox/My Mac (Jesseba’s MacBook Pro)/Documents/GitHub/role-representation/
+speaker-tracking/scripts/analyze_probe_trajectories.py
